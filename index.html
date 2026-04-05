@@ -1,1413 +1,1644 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Bura Textiles — Manufacture of Terry Towels</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Cinzel:wght@400;500;600;700&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BURA TEXTILE – Manufacture of Terry Towels</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
-/* ============================================================
-   CSS VARIABLES
-   ============================================================ */
-:root {
-  --charcoal: #0b0c10;
-  --slate: #121417;
-  --slate-mid: #1a1d22;
-  --slate-light: #22262e;
-  --cream: #f5f1e8;
-  --cream-dim: rgba(245,241,232,0.7);
-  --cream-faint: rgba(245,241,232,0.12);
-  --gold: #d6b25e;
-  --gold-light: #e8cc84;
-  --gold-dim: rgba(214,178,94,0.18);
-  --gold-faint: rgba(214,178,94,0.06);
-  --gold-glow: rgba(214,178,94,0.35);
-  --font-display: 'Cinzel', serif;
-  --font-body: 'Cormorant Garamond', serif;
-  --font-label: 'Jost', sans-serif;
-  --transition: 0.55s cubic-bezier(0.22,1,0.36,1);
+/* ===== CSS VARIABLES ===== */
+:root{
+  --gold:#C9A84C;
+  --gold-light:#E8C97A;
+  --gold-dark:#9A7B2F;
+  --black:#0A0A0A;
+  --black-2:#111111;
+  --black-3:#1A1A1A;
+  --black-4:#222222;
+  --white:#F5F0E8;
+  --white-dim:rgba(245,240,232,0.7);
+  --white-faint:rgba(245,240,232,0.12);
+  --transition:all 0.5s cubic-bezier(0.23,1,0.32,1);
 }
 
-/* ============================================================
-   RESET & BASE
-   ============================================================ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--charcoal);
-  color: var(--cream);
-  font-family: var(--font-body);
-  font-size: 18px;
-  line-height: 1.7;
-  overflow-x: hidden;
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:'Poppins',sans-serif;
+  overflow-x:hidden;
+  cursor:default;
 }
-::selection { background: var(--gold); color: var(--charcoal); }
-a { color: inherit; text-decoration: none; }
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+section{position:relative;overflow:hidden}
 
-/* ============================================================
-   PAGE LOAD OVERLAY
-   ============================================================ */
-#loader {
-  position: fixed; inset: 0; z-index: 9999;
-  background: var(--charcoal);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 24px;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-#loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.loader-logo { animation: loaderPulse 1.4s ease-in-out infinite alternate; }
-.loader-text {
-  font-family: var(--font-label);
-  font-size: 0.7rem;
-  letter-spacing: 0.45em;
-  color: var(--gold);
-  text-transform: uppercase;
-  opacity: 0.7;
-  animation: loaderFade 1.4s ease-in-out infinite alternate;
-}
-.loader-bar {
-  width: 120px; height: 1px;
-  background: var(--gold-dim);
-  position: relative; overflow: hidden;
-}
-.loader-bar::after {
-  content: '';
-  position: absolute; top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  animation: loaderScan 1.2s ease-in-out infinite;
-}
-@keyframes loaderPulse { from { opacity: 0.5; transform: scale(0.97); } to { opacity: 1; transform: scale(1.03); } }
-@keyframes loaderFade { from { opacity: 0.3; } to { opacity: 0.8; } }
-@keyframes loaderScan { to { left: 100%; } }
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--black-2)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
 
-/* ============================================================
-   VENKATESHWARA SVG LOGO — REUSABLE
-   ============================================================ */
-.vt-logo svg { display: block; }
+/* ===== ANIMATED THREAD CANVAS ===== */
+#thread-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;opacity:0.18;
+}
 
-/* ============================================================
-   NAVBAR
-   ============================================================ */
-#navbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 20px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: background 0.5s ease, padding 0.4s ease, box-shadow 0.4s ease;
+/* ===== PRELOADER ===== */
+#preloader{
+  position:fixed;inset:0;background:var(--black);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;transition:opacity 0.8s ease,visibility 0.8s ease;
 }
-#navbar.scrolled {
-  background: rgba(11,12,16,0.95);
-  backdrop-filter: blur(20px);
-  padding: 14px 40px;
-  box-shadow: 0 4px 40px rgba(0,0,0,0.5), 0 1px 0 rgba(214,178,94,0.08);
+#preloader.hide{opacity:0;visibility:hidden}
+.preloader-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem;font-weight:700;letter-spacing:0.3em;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-light),var(--gold-dark));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:shimmer 2s infinite;
 }
-.nav-brand {
-  display: flex; align-items: center; gap: 12px;
-  font-family: var(--font-display);
-  font-size: 1rem; font-weight: 600;
-  letter-spacing: 0.2em;
-  color: var(--cream);
+.preloader-bar{
+  width:200px;height:2px;background:var(--black-4);
+  margin-top:2rem;border-radius:1px;overflow:hidden;
 }
-.nav-brand .vt-icon { width: 32px; height: 32px; }
-.nav-links {
-  display: flex; align-items: center; gap: 36px;
-  list-style: none;
+.preloader-bar-fill{
+  height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));
+  animation:load 1.8s ease forwards;
 }
-.nav-links a {
-  font-family: var(--font-label);
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--cream-dim);
-  position: relative;
-  transition: color 0.3s;
+@keyframes load{from{width:0}to{width:100%}}
+@keyframes shimmer{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.4)}
 }
-.nav-links a::after {
-  content: '';
-  position: absolute; bottom: -4px; left: 0;
-  width: 0; height: 1px;
-  background: var(--gold);
-  transition: width 0.35s ease;
-}
-.nav-links a:hover { color: var(--gold); }
-.nav-links a:hover::after { width: 100%; }
-.nav-cta {
-  font-family: var(--font-label);
-  font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 10px 24px;
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  border-radius: 2px;
-  transition: all 0.35s ease;
-  cursor: pointer;
-}
-.nav-cta:hover {
-  background: var(--gold); color: var(--charcoal);
-  box-shadow: 0 0 20px var(--gold-glow);
-}
-.hamburger {
-  display: none; flex-direction: column; gap: 5px;
-  cursor: pointer; padding: 4px;
-  background: none; border: none;
-}
-.hamburger span {
-  width: 26px; height: 1.5px;
-  background: var(--cream);
-  transition: all 0.35s ease;
-  display: block;
-}
-.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* Mobile Nav */
-.mobile-menu {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999;
-  background: rgba(11,12,16,0.97);
-  backdrop-filter: blur(30px);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 40px;
-  transform: translateX(100%);
-  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+/* ===== STICKY NAV ===== */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:1.2rem 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:var(--transition);
+  border-bottom:1px solid transparent;
 }
-.mobile-menu.open { transform: translateX(0); }
-.mobile-menu a {
-  font-family: var(--font-display);
-  font-size: 1.8rem; letter-spacing: 0.1em;
-  color: var(--cream);
-  transition: color 0.3s;
+#navbar.scrolled{
+  background:rgba(10,10,10,0.92);
+  backdrop-filter:blur(20px);
+  border-bottom-color:rgba(201,168,76,0.2);
+  padding:0.8rem 5%;
 }
-.mobile-menu a:hover { color: var(--gold); }
+.nav-logo{
+  display:flex;align-items:center;gap:0.75rem;
+}
+.nav-logo img{height:42px;width:auto;object-fit:contain}
+.nav-logo-text{
+  display:flex;flex-direction:column;line-height:1;
+}
+.nav-brand{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;font-weight:700;
+  letter-spacing:0.15em;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.nav-tagline{
+  font-size:0.55rem;letter-spacing:0.25em;
+  color:var(--gold);text-transform:uppercase;font-weight:400;
+}
+.nav-links{
+  display:flex;align-items:center;gap:2.5rem;list-style:none;
+}
+.nav-links a{
+  font-size:0.72rem;font-weight:500;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--white-dim);
+  position:relative;transition:var(--transition);
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;
+  width:0;height:1px;background:var(--gold);
+  transition:width 0.4s ease;
+}
+.nav-links a:hover{color:var(--gold-light)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  padding:0.55rem 1.4rem;
+  border:1px solid var(--gold);
+  color:var(--gold)!important;
+  letter-spacing:0.2em!important;
+  border-radius:2px;
+  transition:var(--transition)!important;
+}
+.nav-cta:hover{background:var(--gold)!important;color:var(--black)!important}
+.nav-cta::after{display:none!important}
+.hamburger{
+  display:none;flex-direction:column;gap:5px;cursor:pointer;
+  padding:8px;
+}
+.hamburger span{
+  display:block;width:24px;height:1.5px;
+  background:var(--gold);transition:var(--transition);
+}
+.mobile-menu{
+  display:none;position:fixed;inset:0;background:rgba(10,10,10,0.97);
+  z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem;font-weight:600;letter-spacing:0.1em;
+  color:var(--white-dim);transition:var(--transition);
+}
+.mobile-menu a:hover{color:var(--gold-light)}
 
-/* ============================================================
-   HERO SECTION
-   ============================================================ */
-#hero {
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  background: radial-gradient(ellipse 70% 60% at 50% 40%, #1c1a15 0%, #0d0e11 55%, var(--charcoal) 100%);
+/* ===== HERO SECTION ===== */
+#hero{
+  height:100vh;min-height:700px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  background:radial-gradient(ellipse at 60% 50%,rgba(201,168,76,0.06) 0%,transparent 70%),
+             radial-gradient(ellipse at 10% 80%,rgba(201,168,76,0.04) 0%,transparent 60%),
+             var(--black);
 }
-.hero-bg-layer {
-  position: absolute; inset: 0;
+.hero-bg-texture{
+  position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(201,168,76,0.03) 40px),
+    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(201,168,76,0.03) 40px);
+  animation:gridShift 20s linear infinite;
+}
+@keyframes gridShift{from{transform:translate(0,0)}to{transform:translate(40px,40px)}}
+.hero-orb{
+  position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;
+}
+.orb-1{
+  width:600px;height:600px;
+  top:-20%;right:-10%;
+  background:radial-gradient(circle,rgba(201,168,76,0.08),transparent 70%);
+  animation:orbFloat 8s ease-in-out infinite;
+}
+.orb-2{
+  width:400px;height:400px;
+  bottom:-10%;left:-5%;
+  background:radial-gradient(circle,rgba(154,123,47,0.07),transparent 70%);
+  animation:orbFloat 10s ease-in-out infinite reverse;
+}
+@keyframes orbFloat{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(30px,-30px) scale(1.05)}
+}
+.hero-content{
+  position:relative;z-index:1;
+  max-width:900px;padding:0 5%;text-align:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:0.8rem;
+  font-size:0.68rem;letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:2rem;
+  opacity:0;animation:fadeUp 1s ease 0.3s forwards;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{
+  content:'';width:40px;height:1px;background:var(--gold);
+}
+.hero-logo-display{
+  margin:0 auto 2.5rem;
+  opacity:0;animation:fadeUp 1s ease 0.5s forwards;
+}
+.hero-logo-display img{
+  height:90px;width:auto;margin:0 auto;
+  filter:drop-shadow(0 0 30px rgba(201,168,76,0.4));
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3.5rem,8vw,7.5rem);
+  font-weight:700;line-height:0.95;
+  letter-spacing:0.08em;
+  background:linear-gradient(180deg,var(--gold-light) 0%,var(--gold) 50%,var(--gold-dark) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  opacity:0;animation:fadeUp 1s ease 0.7s forwards;
+}
+.hero-subtitle{
+  font-family:'Montserrat',sans-serif;
+  font-size:clamp(0.9rem,1.8vw,1.15rem);
+  font-weight:300;letter-spacing:0.35em;
+  text-transform:uppercase;color:var(--white-dim);
+  margin:1.5rem 0 0.5rem;
+  opacity:0;animation:fadeUp 1s ease 0.9s forwards;
+}
+.hero-tagline{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.1rem,2.5vw,1.6rem);
+  font-weight:400;font-style:italic;
+  color:rgba(245,240,232,0.5);
+  margin-bottom:3rem;
+  opacity:0;animation:fadeUp 1s ease 1.1s forwards;
+}
+.hero-divider{
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  margin:2rem 0;
+  opacity:0;animation:fadeUp 1s ease 1.2s forwards;
+}
+.hero-divider span{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-divider i{color:var(--gold);font-size:0.7rem}
+.hero-buttons{
+  display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;
+  opacity:0;animation:fadeUp 1s ease 1.3s forwards;
+}
+.btn-primary{
+  padding:1rem 2.5rem;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-light));
+  color:var(--black);
+  font-family:'Montserrat',sans-serif;
+  font-size:0.7rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;
+  border:none;cursor:pointer;border-radius:2px;
+  position:relative;overflow:hidden;
+  transition:var(--transition);box-shadow:0 10px 40px rgba(201,168,76,0.3);
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));
+  opacity:0;transition:opacity 0.4s;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 60px rgba(201,168,76,0.4)}
+.btn-primary:hover::before{opacity:1}
+.btn-primary span{position:relative;z-index:1}
+.btn-outline{
+  padding:1rem 2.5rem;
+  background:transparent;color:var(--gold);
+  font-family:'Montserrat',sans-serif;
+  font-size:0.7rem;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;
+  border:1px solid rgba(201,168,76,0.5);cursor:pointer;border-radius:2px;
+  transition:var(--transition);
+}
+.btn-outline:hover{
+  background:rgba(201,168,76,0.08);
+  border-color:var(--gold);
+  transform:translateY(-3px);
+}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  opacity:0;animation:fadeUp 1s ease 1.6s forwards;
+}
+.hero-scroll span{
+  font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);
+}
+.scroll-line{
+  width:1px;height:50px;
+  background:linear-gradient(to bottom,var(--gold),transparent);
+  animation:scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse{
+  0%{transform:scaleY(0);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}
+  51%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ===== SECTION STYLES ===== */
+.section-pad{padding:120px 5%}
+.section-header{text-align:center;margin-bottom:5rem}
+.section-eyebrow{
+  display:inline-flex;align-items:center;gap:0.8rem;
+  font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.2rem;
+}
+.section-eyebrow::before,.section-eyebrow::after{
+  content:'';width:30px;height:1px;background:var(--gold);
+}
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem,5vw,4rem);
+  font-weight:600;line-height:1.1;
+  color:var(--white);letter-spacing:0.03em;
+}
+.section-title span{
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.section-sub{
+  font-size:0.9rem;color:var(--white-dim);
+  max-width:550px;margin:1.2rem auto 0;line-height:1.9;
+  font-weight:300;
+}
+.gold-line{
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  margin-top:1.5rem;
+}
+.gold-line::before,.gold-line::after{
+  content:'';flex:1;max-width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+}
+.gold-line::after{
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.gold-line i{color:var(--gold);font-size:0.6rem}
+
+/* ===== ABOUT SECTION ===== */
+#about{background:var(--black-2)}
+.about-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;
+  max-width:1200px;margin:0 auto;
+}
+.about-visual{position:relative}
+.about-img-frame{
+  position:relative;
+  border:1px solid rgba(201,168,76,0.25);
+  border-radius:4px;overflow:hidden;
+}
+.about-img-frame::before{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(135deg,rgba(201,168,76,0.08),transparent 60%);
+}
+.about-fabric-art{
+  width:100%;aspect-ratio:4/5;
+  background:var(--black-3);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.weave-pattern{
+  position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(201,168,76,0.06) 0px,rgba(201,168,76,0.06) 2px,transparent 2px,transparent 12px),
+    repeating-linear-gradient(90deg,rgba(201,168,76,0.04) 0px,rgba(201,168,76,0.04) 2px,transparent 2px,transparent 12px);
+  animation:weaveShift 6s ease-in-out infinite alternate;
+}
+@keyframes weaveShift{
+  from{background-position:0 0,0 0}
+  to{background-position:12px 12px,12px 12px}
+}
+.about-fabric-icon{
+  font-size:5rem;color:rgba(201,168,76,0.15);
+  position:relative;z-index:1;
+  animation:pulse 3s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:0.15}
+  50%{transform:scale(1.05);opacity:0.25}
+}
+.about-corner{
+  position:absolute;width:60px;height:60px;
+  border-color:var(--gold);border-style:solid;
+}
+.about-corner.tl{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.about-corner.br{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.about-badge{
+  position:absolute;bottom:-25px;right:-25px;z-index:2;
+  width:120px;height:120px;border-radius:50%;
+  background:linear-gradient(135deg,var(--black-3),var(--black-2));
+  border:2px solid var(--gold);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:0.2rem;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+}
+.about-badge-year{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;font-weight:700;color:var(--gold);
+}
+.about-badge-text{
+  font-size:0.55rem;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--white-dim);
+}
+.about-text .section-eyebrow{justify-content:flex-start}
+.about-text .section-eyebrow::before{display:none}
+.about-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:700;line-height:1.1;
+  color:var(--white);margin-bottom:1.5rem;
+}
+.about-title span{
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.about-para{
+  font-size:0.9rem;color:var(--white-dim);line-height:1.9;
+  margin-bottom:1.2rem;font-weight:300;
+}
+.about-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+  margin-top:3rem;padding-top:2.5rem;
+  border-top:1px solid rgba(201,168,76,0.15);
+}
+.stat-item{text-align:center}
+.stat-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.8rem;font-weight:700;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;
+}
+.stat-label{
+  font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--white-dim);margin-top:0.3rem;
+}
+
+/* ===== PRODUCTS SECTION ===== */
+#products{
   background:
-    radial-gradient(ellipse 400px 300px at 20% 30%, rgba(214,178,94,0.04) 0%, transparent 70%),
-    radial-gradient(ellipse 500px 400px at 80% 70%, rgba(214,178,94,0.035) 0%, transparent 70%);
-  animation: heroBgDrift 12s ease-in-out infinite alternate;
+    radial-gradient(ellipse at 80% 50%,rgba(201,168,76,0.04) 0%,transparent 60%),
+    var(--black);
 }
-@keyframes heroBgDrift {
-  from { opacity: 0.6; transform: scale(1); }
-  to   { opacity: 1;   transform: scale(1.04); }
+.products-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;
+  max-width:1200px;margin:0 auto;
+}
+.product-card{
+  background:linear-gradient(145deg,var(--black-3),var(--black-2));
+  border:1px solid rgba(201,168,76,0.12);
+  border-radius:4px;overflow:hidden;
+  position:relative;
+  transition:var(--transition);
+  group:true;
+}
+.product-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(145deg,rgba(201,168,76,0.06),transparent);
+  opacity:0;transition:opacity 0.5s;
+}
+.product-card:hover{
+  transform:translateY(-12px);
+  border-color:rgba(201,168,76,0.4);
+  box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(201,168,76,0.1);
+}
+.product-card:hover::before{opacity:1}
+.product-img{
+  aspect-ratio:4/3;
+  position:relative;overflow:hidden;
+  background:var(--black-4);
+}
+.product-fabric-bg{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.fabric-weave{
+  width:100%;height:100%;
+  background-image:
+    repeating-linear-gradient(45deg,rgba(201,168,76,0.05) 0px,rgba(201,168,76,0.05) 1px,transparent 1px,transparent 8px),
+    repeating-linear-gradient(-45deg,rgba(201,168,76,0.03) 0px,rgba(201,168,76,0.03) 1px,transparent 1px,transparent 8px);
+  transition:transform 0.8s ease;
+}
+.product-card:hover .fabric-weave{transform:scale(1.1)}
+.product-icon{
+  position:absolute;z-index:1;
+  font-size:3.5rem;color:rgba(201,168,76,0.12);
+  transition:var(--transition);
+}
+.product-card:hover .product-icon{color:rgba(201,168,76,0.2);transform:scale(1.1)}
+.product-badge{
+  position:absolute;top:1rem;right:1rem;z-index:2;
+  padding:0.3rem 0.8rem;
+  background:rgba(201,168,76,0.15);
+  border:1px solid rgba(201,168,76,0.3);
+  border-radius:2px;
+  font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);
+}
+.product-body{padding:2rem}
+.product-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;font-weight:700;
+  color:var(--white);letter-spacing:0.05em;
+  margin-bottom:0.3rem;
+}
+.product-type{
+  font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+}
+.product-specs{
+  display:flex;flex-direction:column;gap:0.8rem;
+  padding-top:1.5rem;
+  border-top:1px solid rgba(201,168,76,0.1);
+}
+.spec-row{display:flex;justify-content:space-between;align-items:center}
+.spec-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.4)}
+.spec-val{font-size:0.78rem;font-weight:500;color:var(--gold-light)}
+.product-inquiry{
+  display:block;width:100%;margin-top:1.5rem;
+  padding:0.8rem;text-align:center;
+  border:1px solid rgba(201,168,76,0.3);
+  background:transparent;color:var(--gold);
+  font-family:'Montserrat',sans-serif;
+  font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;
+  border-radius:2px;cursor:pointer;
+  transition:var(--transition);
+}
+.product-inquiry:hover{background:var(--gold);color:var(--black)}
+
+/* ===== MANUFACTURING SECTION ===== */
+#manufacturing{background:var(--black-2)}
+.mfg-inner{max-width:1200px;margin:0 auto}
+.mfg-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
+}
+.mfg-visual{
+  position:relative;
+  background:linear-gradient(145deg,var(--black-3),var(--black-4));
+  border:1px solid rgba(201,168,76,0.15);
+  border-radius:4px;padding:3rem;
+  min-height:480px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.loom-animation{
+  position:relative;width:100%;
+}
+.loom-frame{
+  border:2px solid rgba(201,168,76,0.3);
+  border-radius:4px;padding:2rem;
+  position:relative;
+  background:rgba(0,0,0,0.3);
+}
+.loom-label{
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;letter-spacing:0.15em;color:var(--gold);
+  margin-bottom:1.5rem;text-transform:uppercase;
+}
+.loom-threads{
+  display:flex;flex-direction:column;gap:4px;padding:1rem 0;
+}
+.loom-thread{
+  height:3px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-dark),var(--gold),transparent);
+  animation:threadWeave 2s ease-in-out infinite;
+  opacity:0.7;
+}
+.loom-thread:nth-child(even){animation-delay:0.3s;animation-direction:reverse}
+.loom-thread:nth-child(3n){animation-delay:0.6s}
+.loom-thread:nth-child(4n){animation-delay:0.9s}
+@keyframes threadWeave{
+  0%{transform:scaleX(0.9);opacity:0.4}
+  50%{transform:scaleX(1.02);opacity:0.85}
+  100%{transform:scaleX(0.9);opacity:0.4}
+}
+.loom-shuttle{
+  height:12px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.6),rgba(201,168,76,0.9),rgba(201,168,76,0.6),transparent);
+  border-radius:6px;
+  margin-top:0.5rem;
+  animation:shuttleRun 1.5s ease-in-out infinite;
+}
+@keyframes shuttleRun{
+  0%{margin-left:0;margin-right:80%}
+  50%{margin-left:80%;margin-right:0}
+  100%{margin-left:0;margin-right:80%}
+}
+.mfg-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(201,168,76,0.05),transparent 70%);
+  pointer-events:none;
+}
+.mfg-steps{
+  display:flex;flex-direction:column;gap:2rem;
+}
+.mfg-step{
+  display:flex;gap:1.5rem;align-items:flex-start;
+  padding:1.5rem;
+  border:1px solid rgba(201,168,76,0.08);
+  border-radius:4px;
+  background:linear-gradient(135deg,rgba(201,168,76,0.03),transparent);
+  transition:var(--transition);
+}
+.mfg-step:hover{
+  border-color:rgba(201,168,76,0.25);
+  background:linear-gradient(135deg,rgba(201,168,76,0.06),transparent);
+  transform:translateX(8px);
+}
+.step-num{
+  min-width:50px;height:50px;border-radius:50%;
+  border:1px solid rgba(201,168,76,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;font-weight:700;color:var(--gold);
+  background:rgba(201,168,76,0.05);
+  flex-shrink:0;
+}
+.step-content h4{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.85rem;font-weight:600;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--white);margin-bottom:0.4rem;
+}
+.step-content p{
+  font-size:0.82rem;color:var(--white-dim);line-height:1.7;font-weight:300;
 }
 
-/* Watermark */
-.hero-watermark {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0.04;
-  pointer-events: none;
+/* ===== WHY CHOOSE US ===== */
+#why{
+  background:
+    radial-gradient(ellipse at 20% 80%,rgba(201,168,76,0.05) 0%,transparent 50%),
+    var(--black);
 }
-.hero-watermark svg { width: 520px; height: 520px; }
-
-/* Floating orbs */
-.orb {
-  position: absolute; border-radius: 50%;
-  filter: blur(80px); pointer-events: none; animation: orbFloat linear infinite;
+.why-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;
+  max-width:1200px;margin:0 auto;
 }
-.orb1 {
-  width: 350px; height: 350px; top: 10%; left: -8%;
-  background: radial-gradient(circle, rgba(214,178,94,0.06) 0%, transparent 70%);
-  animation-duration: 20s;
+.why-card{
+  padding:2.5rem;
+  border:1px solid rgba(201,168,76,0.1);
+  border-radius:4px;
+  background:linear-gradient(145deg,var(--black-3),var(--black-2));
+  position:relative;overflow:hidden;
+  transition:var(--transition);
 }
-.orb2 {
-  width: 280px; height: 280px; bottom: 15%; right: -5%;
-  background: radial-gradient(circle, rgba(214,178,94,0.055) 0%, transparent 70%);
-  animation-duration: 26s; animation-direction: reverse;
+.why-card::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  transform:scaleX(0);transition:transform 0.5s ease;
 }
-.orb3 {
-  width: 200px; height: 200px; top: 60%; left: 45%;
-  background: radial-gradient(circle, rgba(245,241,232,0.03) 0%, transparent 70%);
-  animation-duration: 18s;
+.why-card:hover{
+  transform:translateY(-8px);
+  border-color:rgba(201,168,76,0.3);
 }
-@keyframes orbFloat {
-  0%   { transform: translate(0,0) scale(1); }
-  33%  { transform: translate(30px,-20px) scale(1.05); }
-  66%  { transform: translate(-20px,15px) scale(0.95); }
-  100% { transform: translate(0,0) scale(1); }
+.why-card:hover::after{transform:scaleX(1)}
+.why-icon{
+  width:60px;height:60px;
+  border:1px solid rgba(201,168,76,0.25);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;color:var(--gold);
+  margin-bottom:1.5rem;
+  background:rgba(201,168,76,0.05);
+  transition:var(--transition);
 }
-
-.hero-content {
-  position: relative; z-index: 2;
-  max-width: 800px; padding: 0 24px;
+.why-card:hover .why-icon{
+  background:rgba(201,168,76,0.12);
+  border-color:rgba(201,168,76,0.5);
+  box-shadow:0 0 30px rgba(201,168,76,0.15);
 }
-.hero-logo-wrap {
-  margin-bottom: 40px;
-  opacity: 0; transform: scale(0.85);
-  animation: heroLogoIn 1.2s cubic-bezier(0.22,1,0.36,1) 0.4s forwards;
+.why-title{
+  font-family:'Montserrat',sans-serif;
+  font-size:0.9rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--white);margin-bottom:0.8rem;
 }
-@keyframes heroLogoIn {
-  to { opacity: 1; transform: scale(1); }
-}
-.hero-logo-wrap svg {
-  width: 96px; height: 120px;
-  filter: drop-shadow(0 0 24px rgba(214,178,94,0.35)) drop-shadow(0 0 60px rgba(214,178,94,0.1));
-  animation: logoGlow 3.5s ease-in-out infinite alternate;
-}
-@keyframes logoGlow {
-  from { filter: drop-shadow(0 0 18px rgba(214,178,94,0.28)) drop-shadow(0 0 50px rgba(214,178,94,0.08)); }
-  to   { filter: drop-shadow(0 0 32px rgba(214,178,94,0.5))  drop-shadow(0 0 80px rgba(214,178,94,0.15)); }
+.why-desc{
+  font-size:0.82rem;color:var(--white-dim);line-height:1.8;font-weight:300;
 }
 
-.hero-eyebrow {
-  font-family: var(--font-label);
-  font-size: 0.65rem; letter-spacing: 0.5em;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 18px;
-  opacity: 0; transform: translateY(16px);
-  animation: slideUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.8s forwards;
+/* ===== GALLERY SECTION ===== */
+#gallery{background:var(--black-2)}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:repeat(2,220px);
+  gap:1rem;max-width:1200px;margin:0 auto;
 }
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 6.5rem);
-  font-weight: 600; line-height: 1.05;
-  letter-spacing: 0.06em;
-  color: var(--cream);
-  margin-bottom: 8px;
-  opacity: 0; transform: translateY(24px);
-  animation: slideUp 1s cubic-bezier(0.22,1,0.36,1) 1s forwards;
+.gallery-item{
+  overflow:hidden;border-radius:3px;
+  border:1px solid rgba(201,168,76,0.1);
+  position:relative;cursor:pointer;
+  background:var(--black-3);
 }
-.hero-subtitle {
-  font-family: var(--font-label);
-  font-size: 0.75rem; letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 20px;
-  opacity: 0; transform: translateY(18px);
-  animation: slideUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.2s forwards;
+.gallery-item:nth-child(1){grid-column:span 2}
+.gallery-item:nth-child(4){grid-column:span 2}
+.gallery-item-inner{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  transition:transform 0.8s cubic-bezier(0.23,1,0.32,1);
 }
-.hero-divider {
-  width: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  margin: 22px auto;
-  animation: lineExpand 1.2s cubic-bezier(0.22,1,0.36,1) 1.4s forwards;
+.gallery-item:hover .gallery-item-inner{transform:scale(1.07)}
+.gallery-fabric{
+  position:absolute;inset:0;
 }
-@keyframes lineExpand { to { width: 200px; } }
-
-.hero-motto {
-  font-family: var(--font-body);
-  font-size: clamp(1rem, 2.2vw, 1.25rem);
-  font-style: italic; font-weight: 300;
-  color: var(--cream-dim);
-  margin-bottom: 50px;
-  opacity: 0; transform: translateY(18px);
-  animation: slideUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.6s forwards;
+.gf-1{background:linear-gradient(135deg,#1a1200,#2a1f00,#1a1200);
+  background-image:repeating-linear-gradient(0deg,rgba(201,168,76,0.08) 0px,rgba(201,168,76,0.08) 2px,transparent 2px,transparent 10px),
+                   repeating-linear-gradient(90deg,rgba(201,168,76,0.06) 0px,rgba(201,168,76,0.06) 2px,transparent 2px,transparent 10px);}
+.gf-2{background:linear-gradient(135deg,#0a1a1a,#0f2020,#0a1a1a);
+  background-image:repeating-linear-gradient(45deg,rgba(100,180,180,0.06) 0px,rgba(100,180,180,0.06) 1px,transparent 1px,transparent 8px);}
+.gf-3{background:linear-gradient(135deg,#1a0a0a,#251010,#1a0a0a);
+  background-image:repeating-linear-gradient(-45deg,rgba(180,100,80,0.08) 0px,rgba(180,100,80,0.08) 1px,transparent 1px,transparent 7px);}
+.gf-4{background:linear-gradient(135deg,#0a0a1a,#10102a,#0a0a1a);
+  background-image:repeating-linear-gradient(0deg,rgba(100,100,200,0.07) 0px,rgba(100,100,200,0.07) 2px,transparent 2px,transparent 9px),
+                   repeating-linear-gradient(90deg,rgba(100,100,200,0.05) 0px,rgba(100,100,200,0.05) 2px,transparent 2px,transparent 9px);}
+.gf-5{background:linear-gradient(135deg,#0a1500,#152000,#0a1500);
+  background-image:repeating-linear-gradient(60deg,rgba(80,150,60,0.07) 0px,rgba(80,150,60,0.07) 1px,transparent 1px,transparent 8px);}
+.gf-6{background:linear-gradient(135deg,#1a1000,#201800,#1a1000);
+  background-image:repeating-linear-gradient(30deg,rgba(201,168,76,0.09) 0px,rgba(201,168,76,0.09) 2px,transparent 2px,transparent 12px);}
+.gallery-caption{
+  position:absolute;inset:0;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.3);
+  opacity:0;transition:opacity 0.4s;
 }
-.hero-buttons {
-  display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
-  opacity: 0; transform: translateY(20px);
-  animation: slideUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.8s forwards;
+.gallery-item:hover .gallery-caption{opacity:1}
+.gallery-caption h4{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;letter-spacing:0.15em;color:var(--gold-light);
 }
-.btn-primary {
-  font-family: var(--font-label);
-  font-size: 0.72rem; letter-spacing: 0.22em;
-  text-transform: uppercase;
-  padding: 16px 40px;
-  background: var(--gold);
-  color: var(--charcoal);
-  border: 1px solid var(--gold);
-  border-radius: 2px;
-  cursor: pointer; transition: all 0.4s ease;
-  position: relative; overflow: hidden;
-}
-.btn-primary::before {
-  content: '';
-  position: absolute; top: 50%; left: 50%;
-  width: 0; height: 0;
-  background: rgba(255,255,255,0.15);
-  border-radius: 50%;
-  transform: translate(-50%,-50%);
-  transition: width 0.5s ease, height 0.5s ease;
-}
-.btn-primary:hover::before { width: 300px; height: 300px; }
-.btn-primary:hover { box-shadow: 0 0 40px var(--gold-glow), 0 8px 30px rgba(0,0,0,0.3); transform: translateY(-2px); }
-.btn-secondary {
-  font-family: var(--font-label);
-  font-size: 0.72rem; letter-spacing: 0.22em;
-  text-transform: uppercase;
-  padding: 16px 40px;
-  background: transparent;
-  color: var(--cream);
-  border: 1px solid rgba(245,241,232,0.25);
-  border-radius: 2px;
-  cursor: pointer; transition: all 0.4s ease;
-}
-.btn-secondary:hover {
-  border-color: var(--gold); color: var(--gold);
-  box-shadow: 0 0 24px rgba(214,178,94,0.15);
-  transform: translateY(-2px);
+.gallery-caption p{font-size:0.65rem;letter-spacing:0.2em;color:var(--white-dim);text-transform:uppercase}
+.gallery-icon{
+  font-size:2.5rem;color:rgba(201,168,76,0.2);
+  z-index:1;position:relative;
 }
 
-.scroll-hint {
-  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  opacity: 0; animation: fadeIn 1s ease 2.8s forwards;
+/* ===== CONTACT SECTION ===== */
+#contact{
+  background:
+    radial-gradient(ellipse at 80% 20%,rgba(201,168,76,0.06) 0%,transparent 50%),
+    var(--black);
 }
-.scroll-hint span {
-  font-family: var(--font-label);
-  font-size: 0.58rem; letter-spacing: 0.4em; text-transform: uppercase;
-  color: var(--cream-dim); opacity: 0.5;
+.contact-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;
+  max-width:1200px;margin:0 auto;
+  align-items:start;
 }
-.scroll-mouse {
-  width: 22px; height: 36px;
-  border: 1.5px solid rgba(245,241,232,0.2);
-  border-radius: 12px;
-  position: relative;
+.contact-info{display:flex;flex-direction:column;gap:2rem}
+.contact-heading{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:700;color:var(--white);
+  line-height:1.1;
 }
-.scroll-mouse::after {
-  content: '';
-  position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
-  width: 3px; height: 6px;
-  background: var(--gold);
-  border-radius: 2px;
-  animation: scrollDot 2s ease-in-out infinite;
+.contact-heading span{
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
-@keyframes scrollDot { 0%,100%{top:6px;opacity:1} 60%{top:16px;opacity:0} }
-
-@keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeIn  { to { opacity: 1; } }
-
-/* ============================================================
-   SECTION COMMON
-   ============================================================ */
-section { padding: 120px 40px; }
-.section-tag {
-  font-family: var(--font-label);
-  font-size: 0.62rem; letter-spacing: 0.5em;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 14px; display: block;
+.contact-desc{
+  font-size:0.88rem;color:var(--white-dim);
+  line-height:1.9;font-weight:300;
 }
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
-  font-weight: 500; letter-spacing: 0.05em;
-  color: var(--cream); line-height: 1.15;
-  margin-bottom: 22px;
+.contact-cards{display:flex;flex-direction:column;gap:1rem}
+.contact-card{
+  display:flex;gap:1.2rem;align-items:center;
+  padding:1.2rem 1.5rem;
+  border:1px solid rgba(201,168,76,0.12);
+  border-radius:3px;
+  background:linear-gradient(135deg,rgba(201,168,76,0.03),transparent);
+  transition:var(--transition);
 }
-.section-line {
-  width: 60px; height: 1.5px;
-  background: linear-gradient(90deg, var(--gold), transparent);
-  margin-bottom: 32px;
+.contact-card:hover{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.06)}
+.contact-icon{
+  min-width:44px;height:44px;
+  border:1px solid rgba(201,168,76,0.25);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold);font-size:1rem;
+  background:rgba(201,168,76,0.05);
 }
-.section-line.center { margin-left: auto; margin-right: auto; }
-.container { max-width: 1200px; margin: 0 auto; }
-
-/* Reveal animation */
-.reveal {
-  opacity: 0; transform: translateY(36px);
-  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+.contact-detail h4{
+  font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.3rem;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-left  { opacity: 0; transform: translateX(-40px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1); }
-.reveal-right { opacity: 0; transform: translateX(40px);  transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1); }
-.reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
-
-/* ============================================================
-   MARQUEE STRIP
-   ============================================================ */
-.marquee-strip {
-  background: linear-gradient(90deg, var(--slate) 0%, #161a20 50%, var(--slate) 100%);
-  border-top: 1px solid rgba(214,178,94,0.1);
-  border-bottom: 1px solid rgba(214,178,94,0.1);
-  padding: 18px 0; overflow: hidden;
+.contact-detail p{font-size:0.82rem;color:var(--white-dim);font-weight:300}
+.contact-detail a{color:var(--white-dim);transition:color 0.3s}
+.contact-detail a:hover{color:var(--gold-light)}
+.map-wrap{
+  border-radius:4px;overflow:hidden;
+  border:1px solid rgba(201,168,76,0.15);
+  height:450px;position:relative;
 }
-.marquee-track {
-  display: flex; gap: 0;
-  animation: marqueeScroll 22s linear infinite;
-  white-space: nowrap;
-}
-.marquee-item {
-  display: flex; align-items: center; gap: 16px;
-  padding: 0 40px;
-  font-family: var(--font-label);
-  font-size: 0.65rem; letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--cream-dim);
-}
-.marquee-sep { color: var(--gold); font-size: 0.5rem; }
-@keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* ============================================================
-   ABOUT SECTION
-   ============================================================ */
-#about { background: var(--slate); position: relative; overflow: hidden; }
-#about::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-.about-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 80px; align-items: center;
-}
-.about-visual {
-  position: relative;
-}
-.about-card-art {
-  background: linear-gradient(135deg, var(--slate-mid) 0%, var(--slate-light) 100%);
-  border: 1px solid rgba(214,178,94,0.12);
-  border-radius: 4px;
-  padding: 60px 50px;
-  display: flex; flex-direction: column; align-items: center; gap: 28px;
-  position: relative; overflow: hidden;
-}
-.about-card-art::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(214,178,94,0.06) 0%, transparent 70%);
-}
-.about-card-art .vt-logo { position: relative; }
-.about-card-art .vt-logo svg { width: 80px; height: 100px; animation: logoGlow 4s ease-in-out infinite alternate; }
-.about-year-badge {
-  font-family: var(--font-display);
-  font-size: 4rem; font-weight: 700;
-  color: var(--gold); opacity: 0.12;
-  letter-spacing: 0.05em;
-  line-height: 1;
-}
-.about-card-stat {
-  text-align: center;
-}
-.about-card-stat .num {
-  font-family: var(--font-display);
-  font-size: 2.4rem; font-weight: 600;
-  color: var(--gold); display: block; line-height: 1;
-}
-.about-card-stat .lbl {
-  font-family: var(--font-label);
-  font-size: 0.62rem; letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--cream-dim);
-  margin-top: 6px; display: block;
-}
-.about-stats-row {
-  display: flex; gap: 40px; margin-top: 20px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(214,178,94,0.1);
-  width: 100%;
-  justify-content: center;
+.map-wrap iframe{width:100%;height:100%;border:0;filter:grayscale(0.5) invert(0.85) contrast(0.9)}
+.map-overlay{
+  position:absolute;top:0;left:0;right:0;
+  height:4px;
+  background:linear-gradient(90deg,var(--gold-dark),var(--gold-light),var(--gold-dark));
 }
 
-.about-content { }
-.about-desc {
-  font-size: 1.1rem; color: var(--cream-dim);
-  margin-bottom: 28px; line-height: 1.85;
+/* ===== FOOTER ===== */
+footer{
+  background:var(--black-2);
+  border-top:1px solid rgba(201,168,76,0.1);
+  padding:5rem 5% 2rem;
 }
-.about-founders { margin-top: 36px; }
-.founder-item {
-  display: flex; align-items: center; gap: 18px;
-  padding: 18px 22px;
-  border: 1px solid rgba(214,178,94,0.1);
-  border-radius: 3px;
-  margin-bottom: 14px;
-  background: var(--gold-faint);
-  transition: border-color 0.3s, background 0.3s;
-  position: relative; overflow: hidden;
+.footer-main{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:4rem;
+  max-width:1200px;margin:0 auto 4rem;
 }
-.founder-item::before {
-  content: '';
-  position: absolute; top: 0; left: 0;
-  width: 3px; height: 100%;
-  background: var(--gold);
+.footer-brand{display:flex;flex-direction:column;gap:1.5rem}
+.footer-logo{display:flex;align-items:center;gap:0.75rem}
+.footer-logo img{height:48px;width:auto;object-fit:contain}
+.footer-brand-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-weight:700;
+  letter-spacing:0.15em;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
-.founder-item:hover { border-color: rgba(214,178,94,0.28); background: var(--gold-dim); }
-.founder-icon {
-  width: 44px; height: 44px; border-radius: 50%;
-  background: var(--gold-dim);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+.footer-desc{
+  font-size:0.8rem;color:var(--white-dim);line-height:1.9;font-weight:300;
 }
-.founder-icon svg { width: 22px; height: 22px; fill: var(--gold); }
-.founder-name {
-  font-family: var(--font-display);
-  font-size: 1.05rem; font-weight: 500; color: var(--cream);
-  display: block;
+.footer-col h4{
+  font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+  padding-bottom:0.8rem;
+  border-bottom:1px solid rgba(201,168,76,0.15);
 }
-.founder-role {
-  font-family: var(--font-label);
-  font-size: 0.62rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--gold);
-  margin-top: 2px; display: block;
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:0.8rem}
+.footer-links a{
+  font-size:0.8rem;color:var(--white-dim);
+  transition:var(--transition);
+  display:flex;align-items:center;gap:0.5rem;
 }
-
-/* ============================================================
-   PRODUCTS SECTION
-   ============================================================ */
-#products { background: var(--charcoal); position: relative; }
-.products-header { text-align: center; margin-bottom: 70px; }
-.products-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+.footer-links a::before{
+  content:'';width:0;height:1px;background:var(--gold);transition:width 0.3s;
 }
-.product-card {
-  background: linear-gradient(160deg, var(--slate-mid) 0%, var(--slate) 100%);
-  border: 1px solid rgba(214,178,94,0.1);
-  border-radius: 4px;
-  overflow: hidden;
-  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), box-shadow 0.45s ease, border-color 0.4s;
-  position: relative;
-  cursor: pointer;
+.footer-links a:hover{color:var(--gold-light);padding-left:0.3rem}
+.footer-links a:hover::before{width:12px}
+.footer-contact-list{list-style:none;display:flex;flex-direction:column;gap:1rem}
+.footer-contact-list li{
+  font-size:0.78rem;color:var(--white-dim);
+  display:flex;gap:0.7rem;align-items:flex-start;
 }
-.product-card::after {
-  content: '';
-  position: absolute; inset: 0;
-  border-radius: 4px;
-  box-shadow: inset 0 0 0 1px var(--gold);
-  opacity: 0; transition: opacity 0.4s;
-  pointer-events: none;
+.footer-contact-list li i{color:var(--gold);margin-top:0.1rem;min-width:14px}
+.footer-bottom{
+  max-width:1200px;margin:0 auto;
+  padding-top:2rem;border-top:1px solid rgba(201,168,76,0.08);
+  display:flex;justify-content:space-between;align-items:center;
+  gap:1rem;flex-wrap:wrap;
 }
-.product-card:hover { transform: translateY(-10px); box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(214,178,94,0.1); border-color: rgba(214,178,94,0.3); }
-.product-card:hover::after { opacity: 1; }
-
-.product-img-wrap {
-  width: 100%; height: 240px;
-  overflow: hidden; position: relative;
-  background: linear-gradient(160deg, var(--slate-light) 0%, var(--slate-mid) 100%);
-  display: flex; align-items: center; justify-content: center;
-}
-.product-img-inner {
-  width: 100%; height: 100%;
-  transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
-  display: flex; align-items: center; justify-content: center;
-}
-.product-card:hover .product-img-inner { transform: scale(1.06); }
-.product-svg-art { width: 160px; height: 160px; }
-
-.product-badge {
-  position: absolute; top: 16px; right: 16px;
-  background: var(--gold); color: var(--charcoal);
-  font-family: var(--font-label);
-  font-size: 0.58rem; letter-spacing: 0.2em;
-  text-transform: uppercase;
-  padding: 4px 12px; border-radius: 2px;
+.footer-copy{font-size:0.72rem;color:rgba(245,240,232,0.35);letter-spacing:0.05em}
+.footer-gold-text{
+  font-size:0.7rem;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;
 }
 
-.product-body { padding: 30px 28px; }
-.product-name {
-  font-family: var(--font-display);
-  font-size: 1.3rem; font-weight: 500;
-  color: var(--cream); margin-bottom: 10px;
-  letter-spacing: 0.03em; line-height: 1.3;
+/* ===== FLOATING WHATSAPP ===== */
+.whatsapp-float{
+  position:fixed;bottom:2rem;right:2rem;z-index:900;
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;color:white;
+  box-shadow:0 8px 30px rgba(37,211,102,0.4);
+  transition:var(--transition);
+  animation:waBounce 3s ease-in-out infinite;
 }
-.product-specs {
-  display: flex; gap: 16px; margin-bottom: 18px; flex-wrap: wrap;
+.whatsapp-float:hover{
+  transform:scale(1.1);
+  box-shadow:0 12px 40px rgba(37,211,102,0.5);
 }
-.product-spec {
-  font-family: var(--font-label);
-  font-size: 0.62rem; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--gold);
-  background: var(--gold-faint);
-  border: 1px solid rgba(214,178,94,0.14);
-  padding: 4px 10px; border-radius: 2px;
+@keyframes waBounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
 }
-.product-desc {
-  font-size: 0.95rem; color: var(--cream-dim);
-  line-height: 1.7;
+.wa-tooltip{
+  position:absolute;right:75px;top:50%;transform:translateY(-50%);
+  background:var(--black-3);color:var(--white);
+  font-size:0.72rem;white-space:nowrap;padding:0.4rem 0.8rem;
+  border-radius:3px;border:1px solid rgba(201,168,76,0.2);
+  opacity:0;pointer-events:none;transition:opacity 0.3s;
 }
+.whatsapp-float:hover .wa-tooltip{opacity:1}
 
-/* Product card reveal with stagger */
-.product-card:nth-child(1) { transition-delay: 0s; }
-.product-card:nth-child(2) { transition-delay: 0.08s; }
-.product-card:nth-child(3) { transition-delay: 0.16s; }
+/* ===== SCROLL REVEAL CLASSES ===== */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.delay-1{transition-delay:0.1s}
+.delay-2{transition-delay:0.2s}
+.delay-3{transition-delay:0.3s}
+.delay-4{transition-delay:0.4s}
+.delay-5{transition-delay:0.5s}
 
-/* ============================================================
-   WHY CHOOSE US
-   ============================================================ */
-#why { background: var(--slate); position: relative; overflow: hidden; }
-#why::before, #why::after {
-  content: '';
-  position: absolute;
-  width: 500px; height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(214,178,94,0.04) 0%, transparent 70%);
-  filter: blur(40px); pointer-events: none;
+/* ===== TICKER STRIP ===== */
+.ticker-wrap{
+  background:linear-gradient(90deg,var(--black-2),var(--black-3),var(--black-2));
+  border-top:1px solid rgba(201,168,76,0.12);
+  border-bottom:1px solid rgba(201,168,76,0.12);
+  overflow:hidden;padding:0.9rem 0;
 }
-#why::before { top: -100px; left: -100px; }
-#why::after  { bottom: -100px; right: -100px; }
-.why-header { text-align: center; margin-bottom: 70px; }
-.why-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 28px;
+.ticker{
+  display:flex;gap:0;white-space:nowrap;
+  animation:ticker 30s linear infinite;
 }
-.why-card {
-  background: linear-gradient(160deg, var(--slate-mid) 0%, var(--slate-light) 100%);
-  border: 1px solid rgba(214,178,94,0.08);
-  border-radius: 4px;
-  padding: 42px 28px;
-  text-align: center;
-  position: relative; overflow: hidden;
-  transition: transform 0.4s ease, border-color 0.4s, box-shadow 0.4s;
+.ticker-item{
+  display:inline-flex;align-items:center;gap:1rem;padding:0 2rem;
+  font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--white-dim);
 }
-.why-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0; transition: opacity 0.4s;
-}
-.why-card:hover { transform: translateY(-6px); border-color: rgba(214,178,94,0.22); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.why-card:hover::before { opacity: 1; }
+.ticker-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-.why-icon {
-  width: 64px; height: 64px;
-  background: var(--gold-dim);
-  border: 1px solid rgba(214,178,94,0.18);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 24px;
-  transition: background 0.3s, box-shadow 0.3s;
+/* ===== RESPONSIVE ===== */
+@media(max-width:1100px){
+  .footer-main{grid-template-columns:1fr 1fr}
 }
-.why-card:hover .why-icon {
-  background: rgba(214,178,94,0.22);
-  box-shadow: 0 0 30px rgba(214,178,94,0.2);
+@media(max-width:900px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .about-inner,.mfg-grid,.contact-inner{grid-template-columns:1fr}
+  .about-badge{right:0;bottom:-20px}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gallery-item:nth-child(1),.gallery-item:nth-child(4){grid-column:span 1}
+  .footer-main{grid-template-columns:1fr 1fr}
 }
-.why-icon svg { width: 28px; height: 28px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
-.why-name {
-  font-family: var(--font-display);
-  font-size: 1.1rem; color: var(--cream);
-  margin-bottom: 12px; letter-spacing: 0.04em;
-}
-.why-desc {
-  font-family: var(--font-label);
-  font-size: 0.78rem; color: var(--cream-dim);
-  line-height: 1.75; letter-spacing: 0.02em;
-}
-
-/* ============================================================
-   CONTACT SECTION
-   ============================================================ */
-#contact { background: var(--charcoal); position: relative; overflow: hidden; }
-.contact-inner {
-  max-width: 900px; margin: 0 auto;
-  text-align: center;
-}
-.contact-cards {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 24px; margin: 50px 0;
-}
-.contact-card {
-  background: var(--slate);
-  border: 1px solid rgba(214,178,94,0.1);
-  border-radius: 4px; padding: 36px;
-  transition: border-color 0.3s, transform 0.35s, box-shadow 0.35s;
-}
-.contact-card:hover { border-color: rgba(214,178,94,0.28); transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-.contact-card-icon {
-  width: 50px; height: 50px; margin: 0 auto 20px;
-  background: var(--gold-dim);
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  border: 1px solid rgba(214,178,94,0.18);
-}
-.contact-card-icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
-.contact-person {
-  font-family: var(--font-display);
-  font-size: 1.15rem; color: var(--cream); margin-bottom: 6px;
-}
-.contact-role {
-  font-family: var(--font-label);
-  font-size: 0.6rem; letter-spacing: 0.28em;
-  text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
-}
-.contact-phone-btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--font-label);
-  font-size: 0.75rem; letter-spacing: 0.15em;
-  padding: 12px 26px;
-  border: 1px solid rgba(214,178,94,0.25);
-  border-radius: 2px; color: var(--cream);
-  transition: all 0.35s;
-  cursor: pointer;
-}
-.contact-phone-btn:hover { background: var(--gold); color: var(--charcoal); border-color: var(--gold); box-shadow: 0 0 24px var(--gold-glow); }
-.contact-phone-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
-
-.contact-address {
-  background: var(--slate);
-  border: 1px solid rgba(214,178,94,0.1);
-  border-radius: 4px; padding: 36px;
-  margin-bottom: 40px;
-  display: flex; align-items: flex-start; gap: 22px;
-  text-align: left;
-}
-.address-icon {
-  width: 46px; height: 46px; flex-shrink: 0;
-  background: var(--gold-dim);
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  border: 1px solid rgba(214,178,94,0.18);
-}
-.address-icon svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
-.address-label {
-  font-family: var(--font-label);
-  font-size: 0.6rem; letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
-}
-.address-text {
-  font-family: var(--font-body);
-  font-size: 1rem; color: var(--cream-dim); line-height: 1.8;
-}
-
-/* ============================================================
-   WHATSAPP BUTTON
-   ============================================================ */
-.whatsapp-fab {
-  position: fixed; bottom: 30px; right: 30px; z-index: 999;
-  width: 56px; height: 56px;
-  background: #25D366;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 24px rgba(37,211,102,0.35), 0 2px 8px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s;
-  animation: waBounce 2.5s ease-in-out infinite;
-}
-.whatsapp-fab:hover { transform: scale(1.12); box-shadow: 0 12px 36px rgba(37,211,102,0.5); animation: none; }
-.whatsapp-fab svg { width: 28px; height: 28px; fill: #fff; }
-@keyframes waBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-footer {
-  background: linear-gradient(180deg, var(--slate) 0%, #0a0b0e 100%);
-  border-top: 1px solid rgba(214,178,94,0.1);
-  padding: 60px 40px 40px;
-  text-align: center;
-}
-.footer-logo {
-  display: flex; flex-direction: column; align-items: center; gap: 16px;
-  margin-bottom: 36px;
-}
-.footer-logo svg { width: 40px; height: 50px; opacity: 0.7; }
-.footer-brand {
-  font-family: var(--font-display);
-  font-size: 1.2rem; letter-spacing: 0.22em;
-  color: var(--cream); font-weight: 500;
-}
-.footer-tagline {
-  font-family: var(--font-label);
-  font-size: 0.62rem; letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--gold); opacity: 0.7;
-  margin-top: 4px;
-}
-.footer-divider {
-  width: 60px; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  margin: 0 auto 30px;
-}
-.footer-links {
-  display: flex; justify-content: center; gap: 36px;
-  list-style: none; margin-bottom: 36px; flex-wrap: wrap;
-}
-.footer-links a {
-  font-family: var(--font-label);
-  font-size: 0.62rem; letter-spacing: 0.25em;
-  text-transform: uppercase; color: var(--cream-dim);
-  transition: color 0.3s;
-}
-.footer-links a:hover { color: var(--gold); }
-.footer-copy {
-  font-family: var(--font-label);
-  font-size: 0.62rem; letter-spacing: 0.15em;
-  color: rgba(245,241,232,0.25);
-}
-.footer-copy span { color: var(--gold); opacity: 0.6; }
-
-/* ============================================================
-   SHIMMER ANIMATION UTILITY
-   ============================================================ */
-@keyframes shimmer {
-  0%   { opacity: 0.7; }
-  50%  { opacity: 1;   }
-  100% { opacity: 0.7; }
-}
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 1024px) {
-  .why-grid { grid-template-columns: repeat(2, 1fr); }
-  .products-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 768px) {
-  #navbar { padding: 16px 24px; }
-  #navbar.scrolled { padding: 12px 24px; }
-  .nav-links, .nav-cta { display: none; }
-  .hamburger { display: flex; }
-  section { padding: 80px 24px; }
-  .about-grid { grid-template-columns: 1fr; gap: 50px; }
-  .products-grid { grid-template-columns: 1fr; }
-  .why-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
-  .contact-cards { grid-template-columns: 1fr; }
-  .contact-address { flex-direction: column; gap: 16px; }
-  footer { padding: 50px 24px 30px; }
-  .footer-links { gap: 22px; }
-}
-@media (max-width: 480px) {
-  .why-grid { grid-template-columns: 1fr; }
-  .hero-buttons { flex-direction: column; align-items: center; }
-  .about-stats-row { gap: 24px; }
+@media(max-width:600px){
+  .section-pad{padding:80px 5%}
+  .hero-buttons{flex-direction:column;align-items:center}
+  .gallery-grid{grid-template-columns:1fr}
+  .gallery-item:nth-child(1),.gallery-item:nth-child(4){grid-column:span 1}
+  .footer-main{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .about-stats{grid-template-columns:repeat(3,1fr);gap:1rem}
 }
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     PAGE LOAD OVERLAY
-     ============================================================ -->
-<div id="loader">
-  <div class="loader-logo vt-logo">
-    <!-- Venkateshwara Tilak SVG -->
-    <svg width="70" height="88" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Left wing panel -->
-      <polygon points="8,38 70,38 60,105 42,172 20,172 8,100" fill="#d6b25e"/>
-      <!-- Right wing panel (mirrored) -->
-      <polygon points="152,38 90,38 100,105 118,172 140,172 152,100" fill="#d6b25e"/>
-      <!-- Central tilak stripe with pointed flame top -->
-      <polygon points="80,2 74,36 74,170 80,177 86,170 86,36" fill="#e8cc84"/>
-      <!-- Bottom sacred dot -->
-      <circle cx="80" cy="188" r="9" fill="#d6b25e"/>
-    </svg>
-  </div>
-  <div class="loader-text">Bura Textiles</div>
-  <div class="loader-bar"></div>
+<!-- ANIMATED CANVAS -->
+<canvas id="thread-canvas"></canvas>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="preloader-logo">BURA TEXTILE</div>
+  <div style="font-size:0.6rem;letter-spacing:0.4em;color:var(--gold);margin-top:0.5rem;text-transform:uppercase">Est. 2010 · Solapur, India</div>
+  <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
 </div>
 
-<!-- ============================================================
-     WHATSAPP FAB
-     ============================================================ -->
-<a class="whatsapp-fab" href="https://wa.me/919850631817" target="_blank" title="Chat on WhatsApp" aria-label="WhatsApp">
-  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-    <path d="M16 2C8.268 2 2 8.268 2 16c0 2.487.658 4.82 1.812 6.838L2 30l7.37-1.774A13.913 13.913 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.2a11.14 11.14 0 01-5.696-1.562l-.408-.243-4.372 1.052 1.09-4.272-.266-.44A11.159 11.159 0 014.8 16C4.8 9.82 9.82 4.8 16 4.8c6.18 0 11.2 5.02 11.2 11.2 0 6.18-5.02 11.2-11.2 11.2zm6.13-8.394c-.336-.168-1.988-1.0-2.296-1.108-.308-.112-.532-.168-.756.168-.224.336-.868 1.108-1.064 1.34-.196.224-.392.252-.728.084-.336-.168-1.42-.524-2.704-1.68-1-.9-1.672-2.008-1.868-2.344-.196-.336-.02-.52.148-.688.152-.148.336-.392.504-.588.168-.196.224-.336.336-.56.112-.224.056-.42-.028-.588-.084-.168-.756-1.82-1.036-2.492-.272-.656-.548-.568-.756-.58l-.644-.012c-.224 0-.588.084-.896.42-.308.336-1.176 1.148-1.176 2.8 0 1.652 1.204 3.248 1.372 3.472.168.224 2.376 3.632 5.756 5.088 0.804.348 1.432.556 1.92.712.808.256 1.544.22 2.124.132.648-.1 1.988-.812 2.268-1.596.28-.784.28-1.456.196-1.596-.08-.14-.308-.224-.644-.392z"/>
-  </svg>
-</a>
-
-<!-- ============================================================
-     NAVBAR
-     ============================================================ -->
+<!-- NAVBAR -->
 <nav id="navbar">
-  <div class="nav-brand">
-    <div class="vt-icon">
-      <svg viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="8,38 70,38 60,105 42,172 20,172 8,100" fill="#d6b25e"/>
-        <polygon points="152,38 90,38 100,105 118,172 140,172 152,100" fill="#d6b25e"/>
-        <polygon points="80,2 74,36 74,170 80,177 86,170 86,36" fill="#e8cc84"/>
-        <circle cx="80" cy="188" r="9" fill="#d6b25e"/>
-      </svg>
+  <a href="#hero" class="nav-logo">
+    <!-- LOGO: base64 placeholder - replace src with your actual base64 logo -->
+    <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="42" height="42" rx="4" fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
+      <path d="M8 12 H34 M8 16 H34 M8 20 H34 M8 24 H34 M8 28 H34" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+      <path d="M12 8 V34 M16 8 V34 M20 8 V34 M24 8 V34 M28 8 V34 M32 8 V34" stroke="rgba(201,168,76,0.3)" stroke-width="0.8"/>
+      <circle cx="21" cy="21" r="7" fill="none" stroke="rgba(201,168,76,0.7)" stroke-width="1.5"/>
+      <text x="21" y="25" text-anchor="middle" fill="#C9A84C" font-size="7" font-family="Cormorant Garamond, serif" font-weight="700" letter-spacing="0.5">BT</text>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-brand">BURA TEXTILE</span>
+      <span class="nav-tagline">Manufacture of Terry Towels</span>
     </div>
-    BURA TEXTILES
-  </div>
+  </a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#products">Products</a></li>
-    <li><a href="#why">Quality</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#manufacturing">Process</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
   </ul>
-  <a href="tel:9822074735" class="nav-cta">Call Now</a>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
+  <div class="hamburger" id="hamburger">
     <span></span><span></span><span></span>
-  </button>
+  </div>
 </nav>
 
-<!-- Mobile Menu -->
+<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#about"    onclick="closeMobile()">About</a>
-  <a href="#products" onclick="closeMobile()">Products</a>
-  <a href="#why"      onclick="closeMobile()">Quality</a>
-  <a href="#contact"  onclick="closeMobile()">Contact</a>
-  <a href="tel:9822074735" onclick="closeMobile()" style="color:var(--gold)">☎ Call Us</a>
+  <a href="#about" class="mm-link">About</a>
+  <a href="#products" class="mm-link">Products</a>
+  <a href="#manufacturing" class="mm-link">Process</a>
+  <a href="#why" class="mm-link">Why Us</a>
+  <a href="#gallery" class="mm-link">Gallery</a>
+  <a href="#contact" class="mm-link">Contact</a>
 </div>
 
-<!-- ============================================================
-     HERO SECTION
-     ============================================================ -->
+<!-- HERO SECTION -->
 <section id="hero">
-  <div class="hero-bg-layer"></div>
-  <!-- Floating orbs -->
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
-  <!-- Watermark -->
-  <div class="hero-watermark">
-    <svg viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="8,38 70,38 60,105 42,172 20,172 8,100" fill="#d6b25e"/>
-      <polygon points="152,38 90,38 100,105 118,172 140,172 152,100" fill="#d6b25e"/>
-      <polygon points="80,2 74,36 74,170 80,177 86,170 86,36" fill="#e8cc84"/>
-      <circle cx="80" cy="188" r="9" fill="#d6b25e"/>
-    </svg>
-  </div>
-
-  <!-- Content -->
+  <div class="hero-bg-texture"></div>
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
   <div class="hero-content">
-    <!-- Logo -->
-    <div class="hero-logo-wrap vt-logo">
-      <svg viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="8,38 70,38 60,105 42,172 20,172 8,100" fill="#d6b25e"/>
-        <polygon points="152,38 90,38 100,105 118,172 140,172 152,100" fill="#d6b25e"/>
-        <polygon points="80,2 74,36 74,170 80,177 86,170 86,36" fill="#e8cc84"/>
-        <circle cx="80" cy="188" r="9" fill="#d6b25e"/>
+    <div class="hero-eyebrow">Est. 2010 &nbsp;·&nbsp; Solapur, India &nbsp;·&nbsp; Export Quality</div>
+    <div class="hero-logo-display">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="80" height="80" rx="6" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.35)" stroke-width="1.5"/>
+        <path d="M15 22 H65 M15 30 H65 M15 38 H65 M15 46 H65 M15 54 H65 M15 62 H65" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
+        <path d="M22 15 V65 M30 15 V65 M38 15 V65 M46 15 V65 M54 15 V65 M62 15 V65" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+        <circle cx="40" cy="40" r="14" fill="none" stroke="rgba(201,168,76,0.8)" stroke-width="2"/>
+        <circle cx="40" cy="40" r="9" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
+        <text x="40" y="44.5" text-anchor="middle" fill="#C9A84C" font-size="13" font-family="Cormorant Garamond, serif" font-weight="700" letter-spacing="1">BT</text>
       </svg>
     </div>
-
-    <div class="hero-eyebrow">Est. 2012 · Solapur, India</div>
-    <h1 class="hero-title">BURA<br>TEXTILES</h1>
+    <h1 class="hero-title">BURA<br>TEXTILE</h1>
     <p class="hero-subtitle">Manufacture of Terry Towels</p>
-    <div class="hero-divider"></div>
-    <p class="hero-motto">Crafting Comfort, Delivering Quality Since 2012</p>
+    <p class="hero-tagline">Premium Cotton. Rapier Loom Precision. Export Ready.</p>
+    <div class="hero-divider">
+      <span></span><i class="fas fa-diamond"></i><span></span>
+    </div>
     <div class="hero-buttons">
-      <a href="#products" class="btn-primary">View Products</a>
-      <a href="#contact" class="btn-secondary">Get In Touch</a>
+      <a href="#contact" class="btn-primary"><span>Request Bulk Inquiry</span></a>
+      <a href="#products" class="btn-outline">View Products</a>
     </div>
   </div>
-
-  <!-- Scroll hint -->
-  <div class="scroll-hint">
-    <div class="scroll-mouse"></div>
+  <div class="hero-scroll">
     <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- ============================================================
-     MARQUEE STRIP
-     ============================================================ -->
-<div class="marquee-strip" aria-hidden="true">
-  <div class="marquee-track">
-    <div class="marquee-item">Premium Terry Towels <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">Crafted in Solapur <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">Trusted Since 2012 <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">300–350 GSM Quality <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">Bulk Manufacturing <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">Family Owned Business <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">Premium Terry Towels <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">Crafted in Solapur <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">Trusted Since 2012 <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">300–350 GSM Quality <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">Bulk Manufacturing <span class="marquee-sep">◆</span></div>
-    <div class="marquee-item">Family Owned Business <span class="marquee-sep">◆</span></div>
+<!-- TICKER STRIP -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item"><span class="ticker-dot"></span>Premium Terry Towels</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Rapier Loom Technology</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Export-Quality Finishing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>100% Premium Cotton Yarn</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Bulk Orders Welcome</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>In-House Manufacturing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Est. 2010 · Solapur, India</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>International Export Standards</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="ticker-dot"></span>Premium Terry Towels</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Rapier Loom Technology</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Export-Quality Finishing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>100% Premium Cotton Yarn</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Bulk Orders Welcome</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>In-House Manufacturing</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Est. 2010 · Solapur, India</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>International Export Standards</span>
   </div>
 </div>
 
-<!-- ============================================================
-     ABOUT SECTION
-     ============================================================ -->
-<section id="about">
-  <div class="container">
-    <div class="about-grid">
-      <!-- Visual -->
-      <div class="about-visual reveal-left">
-        <div class="about-card-art">
-          <div class="vt-logo">
-            <svg viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <polygon points="8,38 70,38 60,105 42,172 20,172 8,100" fill="#d6b25e"/>
-              <polygon points="152,38 90,38 100,105 118,172 140,172 152,100" fill="#d6b25e"/>
-              <polygon points="80,2 74,36 74,170 80,177 86,170 86,36" fill="#e8cc84"/>
-              <circle cx="80" cy="188" r="9" fill="#d6b25e"/>
-            </svg>
+<!-- ABOUT SECTION -->
+<section id="about" class="section-pad">
+  <div class="about-inner">
+    <div class="about-visual reveal-left">
+      <div class="about-img-frame">
+        <div class="about-fabric-art">
+          <div class="weave-pattern"></div>
+          <i class="fas fa-th about-fabric-icon"></i>
+        </div>
+        <div class="about-corner tl"></div>
+        <div class="about-corner br"></div>
+      </div>
+      <div class="about-badge">
+        <span class="about-badge-year">15+</span>
+        <span class="about-badge-text">Years of<br>Excellence</span>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-eyebrow reveal delay-1">Our Heritage</div>
+      <h2 class="about-title reveal delay-2">A Family Legacy<br>Woven in <span>Every Thread</span></h2>
+      <p class="about-para reveal delay-2">Founded in 2010 by <strong style="color:var(--gold-light)">Nagnath Mohan Bura</strong> and <strong style="color:var(--gold-light)">Balaji Mohan Bura</strong>, BURA TEXTILE has grown from a passionate local enterprise into a trusted name in premium terry towel manufacturing, serving bulk buyers and export markets across India and beyond.</p>
+      <p class="about-para reveal delay-3">The next generation has arrived — <strong style="color:var(--gold-light)">Rohit Nagnath Bura</strong> brings modern vision and operational expertise to expand and elevate the family legacy. Together, the Bura family continues to uphold an unwavering commitment to quality, craftsmanship, and customer satisfaction.</p>
+      <p class="about-para reveal delay-3">Operating from our state-of-the-art facility in MIDC Solapur, we deploy advanced rapier loom technology with meticulous in-house quality control — ensuring every towel that leaves our factory meets the standards of international markets.</p>
+      <div class="about-stats reveal delay-4">
+        <div class="stat-item">
+          <div class="stat-num" data-count="15">0</div>
+          <div class="stat-label">Years Est.</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="4">0</div>
+          <div class="stat-label">Products</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="100">0</div>
+          <div class="stat-label">% In-House</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS SECTION -->
+<section id="products" class="section-pad">
+  <div class="section-header">
+    <div class="section-eyebrow reveal">Product Range</div>
+    <h2 class="section-title reveal delay-1">Our <span>Premium</span> Collections</h2>
+    <p class="section-sub reveal delay-2">Each product is crafted with premium cotton yarn on advanced rapier looms, ensuring superior absorbency, durability, and export-grade finishing for bulk buyers worldwide.</p>
+    <div class="gold-line reveal delay-3"><i class="fas fa-diamond"></i></div>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card reveal delay-1">
+      <div class="product-img">
+        <div class="product-fabric-bg">
+          <div class="fabric-weave" style="background-image:repeating-linear-gradient(0deg,rgba(201,168,76,0.07) 0,rgba(201,168,76,0.07) 2px,transparent 2px,transparent 10px),repeating-linear-gradient(90deg,rgba(201,168,76,0.05) 0,rgba(201,168,76,0.05) 2px,transparent 2px,transparent 10px);"></div>
+        </div>
+        <i class="fas fa-layer-group product-icon"></i>
+        <div class="product-badge">Flagship</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">PRINCE</div>
+        <div class="product-type">Premium Solid Cotton</div>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-label">Size</span><span class="spec-val">30 × 60 inch</span></div>
+          <div class="spec-row"><span class="spec-label">GSM</span><span class="spec-val">350 GSM</span></div>
+          <div class="spec-row"><span class="spec-label">Material</span><span class="spec-val">Solid Cotton</span></div>
+        </div>
+        <a href="#contact" class="product-inquiry">Request Quote</a>
+      </div>
+    </div>
+
+    <div class="product-card reveal delay-2">
+      <div class="product-img">
+        <div class="product-fabric-bg">
+          <div class="fabric-weave" style="background-image:repeating-linear-gradient(45deg,rgba(201,168,76,0.06) 0,rgba(201,168,76,0.06) 1.5px,transparent 1.5px,transparent 9px),repeating-linear-gradient(-45deg,rgba(201,168,76,0.04) 0,rgba(201,168,76,0.04) 1.5px,transparent 1.5px,transparent 9px);"></div>
+        </div>
+        <i class="fas fa-star product-icon"></i>
+        <div class="product-badge">Bestseller</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">SUPREME</div>
+        <div class="product-type">Cotton Blend</div>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-label">Size</span><span class="spec-val">30 × 60 inch</span></div>
+          <div class="spec-row"><span class="spec-label">GSM</span><span class="spec-val">300 GSM</span></div>
+          <div class="spec-row"><span class="spec-label">Material</span><span class="spec-val">Cotton</span></div>
+        </div>
+        <a href="#contact" class="product-inquiry">Request Quote</a>
+      </div>
+    </div>
+
+    <div class="product-card reveal delay-3">
+      <div class="product-img">
+        <div class="product-fabric-bg">
+          <div class="fabric-weave" style="background-image:repeating-linear-gradient(30deg,rgba(180,140,60,0.06) 0,rgba(180,140,60,0.06) 2px,transparent 2px,transparent 11px);"></div>
+        </div>
+        <i class="fas fa-gem product-icon"></i>
+        <div class="product-badge">Filament</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">CHATTUR<br>BHEEM</div>
+        <div class="product-type">Filament Weave</div>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-label">Size</span><span class="spec-val">30 × 60 inch</span></div>
+          <div class="spec-row"><span class="spec-label">GSM</span><span class="spec-val">300 GSM</span></div>
+          <div class="spec-row"><span class="spec-label">Material</span><span class="spec-val">Filament</span></div>
+        </div>
+        <a href="#contact" class="product-inquiry">Request Quote</a>
+      </div>
+    </div>
+
+    <div class="product-card reveal delay-4">
+      <div class="product-img">
+        <div class="product-fabric-bg">
+          <div class="fabric-weave" style="background-image:repeating-linear-gradient(60deg,rgba(160,130,50,0.06) 0,rgba(160,130,50,0.06) 1.5px,transparent 1.5px,transparent 8px),repeating-linear-gradient(120deg,rgba(201,168,76,0.04) 0,rgba(201,168,76,0.04) 1.5px,transparent 1.5px,transparent 8px);"></div>
+        </div>
+        <i class="fas fa-certificate product-icon"></i>
+        <div class="product-badge">Compact</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">SONY</div>
+        <div class="product-type">Cotton — Hand Towel</div>
+        <div class="product-specs">
+          <div class="spec-row"><span class="spec-label">Size</span><span class="spec-val">27 × 54 inch</span></div>
+          <div class="spec-row"><span class="spec-label">GSM</span><span class="spec-val">250 GSM</span></div>
+          <div class="spec-row"><span class="spec-label">Material</span><span class="spec-val">Cotton</span></div>
+        </div>
+        <a href="#contact" class="product-inquiry">Request Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANUFACTURING PROCESS -->
+<section id="manufacturing" class="section-pad">
+  <div class="mfg-inner">
+    <div class="section-header">
+      <div class="section-eyebrow reveal">Our Process</div>
+      <h2 class="section-title reveal delay-1">Advanced <span>Manufacturing</span></h2>
+      <p class="section-sub reveal delay-2">Powered by cutting-edge rapier loom technology and decades of textile expertise, every towel passes through a rigorous in-house production pipeline.</p>
+      <div class="gold-line reveal delay-3"><i class="fas fa-diamond"></i></div>
+    </div>
+    <div class="mfg-grid">
+      <div class="mfg-visual reveal-left">
+        <div class="loom-animation">
+          <div class="loom-frame">
+            <div class="loom-label"><i class="fas fa-cogs" style="margin-right:0.5rem;opacity:0.6"></i>Rapier Loom</div>
+            <div class="loom-threads">
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+              <div class="loom-thread"></div>
+            </div>
+            <div class="loom-shuttle"></div>
           </div>
-          <div class="about-year-badge">2012</div>
-          <div class="about-stats-row">
-            <div class="about-card-stat">
-              <span class="num">13+</span>
-              <span class="lbl">Years</span>
-            </div>
-            <div class="about-card-stat">
-              <span class="num">3</span>
-              <span class="lbl">Products</span>
-            </div>
-            <div class="about-card-stat">
-              <span class="num">100%</span>
-              <span class="lbl">Cotton</span>
-            </div>
+        </div>
+        <div class="mfg-glow"></div>
+      </div>
+      <div class="mfg-steps">
+        <div class="mfg-step reveal delay-1">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h4>Premium Cotton Sourcing</h4>
+            <p>We source the finest long-staple cotton yarn from trusted suppliers, ensuring exceptional softness, absorbency, and consistent fibre quality for every production run.</p>
+          </div>
+        </div>
+        <div class="mfg-step reveal delay-2">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h4>Rapier Loom Weaving</h4>
+            <p>Our advanced rapier looms interlace warp and weft threads with millimetre precision, creating the characteristic terry loop pile that defines premium towel performance.</p>
+          </div>
+        </div>
+        <div class="mfg-step reveal delay-3">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h4>Finishing & Quality Control</h4>
+            <p>Every batch undergoes rigorous washing, drying, and finishing processes. GSM verification, dimensional checks, and visual inspection ensure consistent export-grade output.</p>
+          </div>
+        </div>
+        <div class="mfg-step reveal delay-4">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h4>Packaging & Dispatch</h4>
+            <p>Towels are neatly packed, labelled, and prepared for bulk dispatch. We accommodate custom packaging and branding requirements for wholesale and export clients.</p>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <!-- Content -->
-      <div class="about-content reveal-right">
-        <span class="section-tag">Our Story</span>
-        <h2 class="section-title">A Family Legacy<br>Built on Trust</h2>
-        <div class="section-line"></div>
-        <p class="about-desc">
-          Founded in 2012 in the textile capital of Solapur, Bura Textiles is a family-owned manufacturing house with a single-minded commitment — creating towels that deliver real comfort with lasting quality.
+<!-- WHY CHOOSE US -->
+<section id="why" class="section-pad">
+  <div class="section-header">
+    <div class="section-eyebrow reveal">Our Advantage</div>
+    <h2 class="section-title reveal delay-1">Why Choose <span>BURA TEXTILE</span></h2>
+    <p class="section-sub reveal delay-2">We combine decades of family expertise with modern manufacturing capabilities to deliver a product that speaks for itself in every international market.</p>
+    <div class="gold-line reveal delay-3"><i class="fas fa-diamond"></i></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal delay-1">
+      <div class="why-icon"><i class="fas fa-industry"></i></div>
+      <div class="why-title">In-House Production</div>
+      <div class="why-desc">Complete control over the manufacturing process — from yarn to finished product — ensures unmatched consistency and the ability to meet precise bulk order specifications.</div>
+    </div>
+    <div class="why-card reveal delay-2">
+      <div class="why-icon"><i class="fas fa-cogs"></i></div>
+      <div class="why-title">Rapier Loom Technology</div>
+      <div class="why-desc">Advanced rapier looms deliver superior weave density, even pile height, and exceptional durability — producing towels that retain their quality through hundreds of wash cycles.</div>
+    </div>
+    <div class="why-card reveal delay-3">
+      <div class="why-icon"><i class="fas fa-globe-asia"></i></div>
+      <div class="why-title">Export-Ready Quality</div>
+      <div class="why-desc">Every towel is manufactured to meet international export standards. Our finishing processes deliver the texture, weight, and presentation required by global buyers.</div>
+    </div>
+    <div class="why-card reveal delay-1">
+      <div class="why-icon"><i class="fas fa-seedling"></i></div>
+      <div class="why-title">Premium Cotton Yarn</div>
+      <div class="why-desc">We use only the highest grade cotton yarn, ensuring superior softness, excellent moisture absorption, and long-lasting fabric consistency across every SKU.</div>
+    </div>
+    <div class="why-card reveal delay-2">
+      <div class="why-icon"><i class="fas fa-shield-alt"></i></div>
+      <div class="why-title">Strict Quality Control</div>
+      <div class="why-desc">Multi-stage quality inspections — GSM checking, dimensional accuracy, pile density, and colour consistency — guarantee zero-defect product delivery for every bulk order.</div>
+    </div>
+    <div class="why-card reveal delay-3">
+      <div class="why-icon"><i class="fas fa-handshake"></i></div>
+      <div class="why-title">Family Business Trust</div>
+      <div class="why-desc">As a family-owned enterprise with 15+ years of heritage, we build lasting relationships with our clients. Your order receives personal attention from order to delivery.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY SECTION -->
+<section id="gallery" class="section-pad">
+  <div class="section-header">
+    <div class="section-eyebrow reveal">Textile Showcase</div>
+    <h2 class="section-title reveal delay-1">Fabric &amp; <span>Craftsmanship</span></h2>
+    <p class="section-sub reveal delay-2">A visual testament to the weaving artistry and material quality that defines every BURA TEXTILE product.</p>
+    <div class="gold-line reveal delay-3"><i class="fas fa-diamond"></i></div>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item reveal delay-1">
+      <div class="gallery-item-inner">
+        <div class="gallery-fabric gf-1"></div>
+        <i class="fas fa-th gallery-icon"></i>
+        <div class="gallery-caption">
+          <h4>Premium Weave</h4>
+          <p>Terry Loop Structure</p>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal delay-2">
+      <div class="gallery-item-inner">
+        <div class="gallery-fabric gf-2"></div>
+        <i class="fas fa-layer-group gallery-icon"></i>
+        <div class="gallery-caption">
+          <h4>Pile Density</h4>
+          <p>300–350 GSM Range</p>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal delay-3">
+      <div class="gallery-item-inner">
+        <div class="gallery-fabric gf-3"></div>
+        <i class="fas fa-tint gallery-icon"></i>
+        <div class="gallery-caption">
+          <h4>Colour Fast</h4>
+          <p>Premium Dyeing Process</p>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal delay-2">
+      <div class="gallery-item-inner">
+        <div class="gallery-fabric gf-4"></div>
+        <i class="fas fa-cogs gallery-icon"></i>
+        <div class="gallery-caption">
+          <h4>Loom Precision</h4>
+          <p>Rapier Technology</p>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal delay-3">
+      <div class="gallery-item-inner">
+        <div class="gallery-fabric gf-5"></div>
+        <i class="fas fa-leaf gallery-icon"></i>
+        <div class="gallery-caption">
+          <h4>Cotton Yarn</h4>
+          <p>Long-Staple Premium Grade</p>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item reveal delay-4">
+      <div class="gallery-item-inner">
+        <div class="gallery-fabric gf-6"></div>
+        <i class="fas fa-box gallery-icon"></i>
+        <div class="gallery-caption">
+          <h4>Bulk Ready</h4>
+          <p>Export Packaging</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="section-pad">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <div>
+        <div class="section-eyebrow reveal" style="justify-content:flex-start">
+          <span style="width:30px;height:1px;background:var(--gold);display:inline-block"></span>
+          Get In Touch
+        </div>
+        <h2 class="contact-heading reveal delay-1">
+          Let's Build<br>Something <span>Great</span>
+        </h2>
+        <p class="contact-desc reveal delay-2">
+          Ready to place a bulk order or need custom specifications? Our team is available to discuss your requirements, pricing, and delivery schedules. We serve wholesalers, exporters, and international clients with equal dedication.
         </p>
-        <p class="about-desc">
-          With over a decade of hands-on experience, we have established ourselves as a trusted name in terry towel manufacturing, supplying premium-grade products across India.
-        </p>
-
-        <div class="about-founders">
-          <div class="founder-item">
-            <div class="founder-icon">
-              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </div>
-            <div>
-              <span class="founder-name">Nagnath Mohan Bura</span>
-              <span class="founder-role">Co-Founder &amp; Director</span>
-            </div>
-          </div>
-          <div class="founder-item">
-            <div class="founder-icon">
-              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </div>
-            <div>
-              <span class="founder-name">Balaji Mohan Bura</span>
-              <span class="founder-role">Co-Founder &amp; Director</span>
-            </div>
+      </div>
+      <div class="contact-cards">
+        <div class="contact-card reveal delay-2">
+          <div class="contact-icon"><i class="fas fa-user-tie"></i></div>
+          <div class="contact-detail">
+            <h4>Nagnath Mohan Bura</h4>
+            <p>Founder & Director</p>
+            <a href="tel:+919822074735">+91 98220 74735</a>
           </div>
         </div>
+        <div class="contact-card reveal delay-3">
+          <div class="contact-icon"><i class="fas fa-user-tie"></i></div>
+          <div class="contact-detail">
+            <h4>Balaji Mohan Bura</h4>
+            <p>Founder & Director</p>
+            <a href="tel:+919850631817">+91 98506 31817</a>
+          </div>
+        </div>
+        <div class="contact-card reveal delay-4">
+          <div class="contact-icon"><i class="fas fa-user"></i></div>
+          <div class="contact-detail">
+            <h4>Rohit Nagnath Bura</h4>
+            <p>Operations & Export</p>
+            <a href="tel:+918888107125">+91 88881 07125</a>
+          </div>
+        </div>
+        <div class="contact-card reveal delay-4">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="contact-detail">
+            <h4>Factory Address</h4>
+            <p>B-15 Padmashali Nagar, MIDC<br>Solapur, Maharashtra – 413006, India</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal delay-5" style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.5rem">
+        <a href="https://wa.me/919822074735" target="_blank" class="btn-primary"><span><i class="fab fa-whatsapp" style="margin-right:0.5rem"></i>WhatsApp Us</span></a>
+        <a href="tel:+919822074735" class="btn-outline">Call Now</a>
+      </div>
+    </div>
+    <div class="reveal-right delay-2">
+      <div class="map-wrap">
+        <div class="map-overlay"></div>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3802.1234!2d75.9064!3d17.6799!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc5db5d9dda5555%3A0xc77c7bb6f9c64e6c!2sMIDC%20Industrial%20Area%2C%20Solapur%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     PRODUCTS SECTION
-     ============================================================ -->
-<section id="products">
-  <div class="container">
-    <div class="products-header reveal">
-      <span class="section-tag">Our Collection</span>
-      <h2 class="section-title">Premium Terry Towels</h2>
-      <div class="section-line center"></div>
-      <p style="font-size:1rem;color:var(--cream-dim);max-width:520px;margin:0 auto;font-style:italic;">
-        Every towel we craft is a promise — of softness, durability, and the finest cotton from the looms of Solapur.
-      </p>
-    </div>
-
-    <div class="products-grid">
-
-      <!-- Product 1 -->
-      <div class="product-card reveal" style="transition-delay:0.05s">
-        <div class="product-img-wrap">
-          <div class="product-img-inner">
-            <!-- SVG art: woven towel pattern -->
-            <svg class="product-svg-art" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="20" y="30" width="120" height="100" rx="4" fill="#1a1d22" stroke="#d6b25e" stroke-width="1"/>
-              <!-- Weave lines horizontal -->
-              <line x1="20" y1="50" x2="140" y2="50" stroke="#d6b25e" stroke-width="0.5" opacity="0.3"/>
-              <line x1="20" y1="70" x2="140" y2="70" stroke="#d6b25e" stroke-width="0.5" opacity="0.3"/>
-              <line x1="20" y1="90" x2="140" y2="90" stroke="#d6b25e" stroke-width="0.5" opacity="0.3"/>
-              <line x1="20" y1="110" x2="140" y2="110" stroke="#d6b25e" stroke-width="0.5" opacity="0.3"/>
-              <!-- Weave lines vertical -->
-              <line x1="40" y1="30" x2="40" y2="130" stroke="#d6b25e" stroke-width="0.5" opacity="0.3"/>
-              <line x1="60" y1="30" x2="60" y2="130" stroke="#d6b25e" stroke-width="0.5" opacity="0.3"/>
-              <line x1="80" y1="30" x2="80" y2="130" stroke="#d6b25e" stroke-width="0.5" opacity="0.3"/>
-              <line x1="100" y1="30" x2="100" y2="130" stroke="#d6b25e" stroke-width="0.5" opacity="0.3"/>
-              <line x1="120" y1="30" x2="120" y2="130" stroke="#d6b25e" stroke-width="0.5" opacity="0.3"/>
-              <!-- Border band -->
-              <rect x="20" y="30" width="120" height="14" rx="0" fill="#d6b25e" opacity="0.12"/>
-              <rect x="20" y="116" width="120" height="14" rx="0" fill="#d6b25e" opacity="0.12"/>
-              <!-- Center motif -->
-              <circle cx="80" cy="80" r="18" stroke="#d6b25e" stroke-width="1" opacity="0.5"/>
-              <text x="80" y="85" text-anchor="middle" font-family="serif" font-size="10" fill="#d6b25e" opacity="0.7">CB</text>
-              <!-- Loop texture dots -->
-              <circle cx="55" cy="80" r="2" fill="#d6b25e" opacity="0.25"/>
-              <circle cx="105" cy="80" r="2" fill="#d6b25e" opacity="0.25"/>
-              <circle cx="80" cy="55" r="2" fill="#d6b25e" opacity="0.25"/>
-              <circle cx="80" cy="105" r="2" fill="#d6b25e" opacity="0.25"/>
-            </svg>
-          </div>
-          <span class="product-badge">300 GSM</span>
-        </div>
-        <div class="product-body">
-          <h3 class="product-name">Chattur Bheem Cotton Towel</h3>
-          <div class="product-specs">
-            <span class="product-spec">30×60 in</span>
-            <span class="product-spec">300 GSM</span>
-            <span class="product-spec">Pure Cotton</span>
-          </div>
-          <p class="product-desc">A robust everyday towel with excellent absorbency and a soft terry loop construction. Ideal for daily comfort and long-term durability.</p>
-        </div>
-      </div>
-
-      <!-- Product 2 -->
-      <div class="product-card reveal" style="transition-delay:0.15s">
-        <div class="product-img-wrap">
-          <div class="product-img-inner">
-            <svg class="product-svg-art" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="20" y="30" width="120" height="100" rx="4" fill="#1a1d22" stroke="#d6b25e" stroke-width="1"/>
-              <!-- Embroidery border design -->
-              <rect x="28" y="38" width="104" height="84" rx="2" stroke="#d6b25e" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.4"/>
-              <!-- Floral motif center -->
-              <circle cx="80" cy="80" r="22" stroke="#d6b25e" stroke-width="1.2" opacity="0.6"/>
-              <circle cx="80" cy="80" r="14" stroke="#d6b25e" stroke-width="0.7" opacity="0.4"/>
-              <!-- Petals -->
-              <ellipse cx="80" cy="58" rx="4" ry="8" fill="#d6b25e" opacity="0.3"/>
-              <ellipse cx="80" cy="102" rx="4" ry="8" fill="#d6b25e" opacity="0.3"/>
-              <ellipse cx="58" cy="80" rx="8" ry="4" fill="#d6b25e" opacity="0.3"/>
-              <ellipse cx="102" cy="80" rx="8" ry="4" fill="#d6b25e" opacity="0.3"/>
-              <circle cx="80" cy="80" r="5" fill="#d6b25e" opacity="0.5"/>
-              <!-- Corner motifs -->
-              <rect x="26" y="36" width="10" height="10" stroke="#d6b25e" stroke-width="0.8" fill="none" opacity="0.5" transform="rotate(45 31 41)"/>
-              <rect x="114" y="36" width="10" height="10" stroke="#d6b25e" stroke-width="0.8" fill="none" opacity="0.5" transform="rotate(45 119 41)"/>
-              <rect x="26" y="114" width="10" height="10" stroke="#d6b25e" stroke-width="0.8" fill="none" opacity="0.5" transform="rotate(45 31 119)"/>
-              <rect x="114" y="114" width="10" height="10" stroke="#d6b25e" stroke-width="0.8" fill="none" opacity="0.5" transform="rotate(45 119 119)"/>
-            </svg>
-          </div>
-          <span class="product-badge">350 GSM</span>
-        </div>
-        <div class="product-body">
-          <h3 class="product-name">Prince Solid Embroidery Towel</h3>
-          <div class="product-specs">
-            <span class="product-spec">30×60 in</span>
-            <span class="product-spec">350 GSM</span>
-            <span class="product-spec">Embroidered</span>
-          </div>
-          <p class="product-desc">Elevated with solid color embroidery detail, this premium towel combines aesthetic refinement with superior absorbency for a luxurious experience.</p>
-        </div>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="product-card reveal" style="transition-delay:0.25s">
-        <div class="product-img-wrap">
-          <div class="product-img-inner">
-            <svg class="product-svg-art" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="20" y="30" width="120" height="100" rx="4" fill="#1a1d22" stroke="#d6b25e" stroke-width="1"/>
-              <!-- Filament sheen effect -->
-              <defs>
-                <linearGradient id="sheen" x1="20" y1="30" x2="140" y2="130" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#d6b25e" stop-opacity="0.02"/>
-                  <stop offset="45%" stop-color="#d6b25e" stop-opacity="0.18"/>
-                  <stop offset="55%" stop-color="#f5f1e8" stop-opacity="0.12"/>
-                  <stop offset="100%" stop-color="#d6b25e" stop-opacity="0.02"/>
-                </linearGradient>
-              </defs>
-              <rect x="20" y="30" width="120" height="100" rx="4" fill="url(#sheen)"/>
-              <!-- Diagonal silky lines -->
-              <line x1="20" y1="30" x2="140" y2="130" stroke="#d6b25e" stroke-width="0.4" opacity="0.25"/>
-              <line x1="35" y1="30" x2="140" y2="113" stroke="#d6b25e" stroke-width="0.3" opacity="0.18"/>
-              <line x1="20" y1="47" x2="123" y2="130" stroke="#d6b25e" stroke-width="0.3" opacity="0.18"/>
-              <line x1="50" y1="30" x2="140" y2="96" stroke="#d6b25e" stroke-width="0.3" opacity="0.13"/>
-              <line x1="20" y1="64" x2="106" y2="130" stroke="#d6b25e" stroke-width="0.3" opacity="0.13"/>
-              <!-- Supreme badge mark -->
-              <path d="M60 70 Q80 55 100 70 Q115 80 100 90 Q80 105 60 90 Q45 80 60 70Z" stroke="#d6b25e" stroke-width="1" fill="none" opacity="0.55"/>
-              <text x="80" y="84" text-anchor="middle" font-family="serif" font-size="9" fill="#d6b25e" opacity="0.8">SUPREME</text>
-              <!-- Top & bottom border bars -->
-              <rect x="20" y="30" width="120" height="12" fill="#d6b25e" opacity="0.1"/>
-              <rect x="20" y="118" width="120" height="12" fill="#d6b25e" opacity="0.1"/>
-            </svg>
-          </div>
-          <span class="product-badge">300 GSM</span>
-        </div>
-        <div class="product-body">
-          <h3 class="product-name">Supreme Filament Towel</h3>
-          <div class="product-specs">
-            <span class="product-spec">30×60 in</span>
-            <span class="product-spec">300 GSM</span>
-            <span class="product-spec">Filament</span>
-          </div>
-          <p class="product-desc">Featuring a silky filament weave, this towel offers a smooth, lustrous finish with superior softness — the ultimate in comfort and elegance.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     WHY CHOOSE US
-     ============================================================ -->
-<section id="why">
-  <div class="container">
-    <div class="why-header reveal">
-      <span class="section-tag">Why Choose Us</span>
-      <h2 class="section-title">Built on Four Pillars</h2>
-      <div class="section-line center"></div>
-    </div>
-    <div class="why-grid">
-
-      <div class="why-card reveal" style="transition-delay:0.05s">
-        <div class="why-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <div class="why-name">Premium Quality</div>
-        <p class="why-desc">Every towel passes rigorous quality checks — from thread count to GSM density — ensuring excellence in every fold.</p>
-      </div>
-
-      <div class="why-card reveal" style="transition-delay:0.12s">
-        <div class="why-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <div class="why-name">Trusted Since 2012</div>
-        <p class="why-desc">Over 13 years of consistent delivery, loyal customers, and a reputation built on honesty and craftsmanship.</p>
-      </div>
-
-      <div class="why-card reveal" style="transition-delay:0.19s">
-        <div class="why-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-        </div>
-        <div class="why-name">Bulk Manufacturing</div>
-        <p class="why-desc">Equipped for large-scale production with precise consistency, we accommodate bulk orders with quick turnaround times.</p>
-      </div>
-
-      <div class="why-card reveal" style="transition-delay:0.26s">
-        <div class="why-icon">
-          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <div class="why-name">Made in Solapur</div>
-        <p class="why-desc">Rooted in India's textile capital, our fabrics carry the heritage and expertise of Solapur's renowned weaving tradition.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     CONTACT SECTION
-     ============================================================ -->
-<section id="contact">
-  <div class="container">
-    <div class="contact-inner">
-      <div class="reveal">
-        <span class="section-tag">Get In Touch</span>
-        <h2 class="section-title">Let's Talk Textiles</h2>
-        <div class="section-line center"></div>
-        <p style="color:var(--cream-dim);font-style:italic;font-size:1.05rem;margin-bottom:10px;">
-          For bulk orders, pricing, or enquiries — our founders are always a call away.
-        </p>
-      </div>
-
-      <div class="contact-cards reveal">
-        <!-- Nagnath -->
-        <div class="contact-card">
-          <div class="contact-card-icon">
-            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <div class="contact-person">Nagnath Mohan Bura</div>
-          <div class="contact-role">Co-Founder</div>
-          <a class="contact-phone-btn" href="tel:9822074735">
-            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.56 10.78 19.79 19.79 0 01.5 2.18 2 2 0 012.47 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.1 6.1l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-            +91 98220 74735
-          </a>
-        </div>
-
-        <!-- Balaji -->
-        <div class="contact-card">
-          <div class="contact-card-icon">
-            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <div class="contact-person">Balaji Mohan Bura</div>
-          <div class="contact-role">Co-Founder</div>
-          <a class="contact-phone-btn" href="tel:9850631817">
-            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.56 10.78 19.79 19.79 0 01.5 2.18 2 2 0 012.47 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.1 6.1l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-            +91 98506 31817
-          </a>
-        </div>
-      </div>
-
-      <!-- Address -->
-      <div class="contact-address reveal">
-        <div class="address-icon">
-          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <div>
-          <div class="address-label">Our Location</div>
-          <div class="address-text">
-            B-15 Padmashali Nagar, Akkalkot Road,<br>
-            MIDC, Solapur — Maharashtra, India
-          </div>
-        </div>
-      </div>
-
-      <div class="reveal">
-        <a href="tel:9822074735" class="btn-primary" style="display:inline-block">
-          📞 &nbsp; Call for Bulk Orders
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
+<!-- FOOTER -->
 <footer>
-  <div class="footer-logo">
-    <svg viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="8,38 70,38 60,105 42,172 20,172 8,100" fill="#d6b25e"/>
-      <polygon points="152,38 90,38 100,105 118,172 140,172 152,100" fill="#d6b25e"/>
-      <polygon points="80,2 74,36 74,170 80,177 86,170 86,36" fill="#e8cc84"/>
-      <circle cx="80" cy="188" r="9" fill="#d6b25e"/>
-    </svg>
-    <div>
-      <div class="footer-brand">BURA TEXTILES</div>
-      <div class="footer-tagline">Manufacture of Terry Towels</div>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="46" height="46" rx="4" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+          <path d="M9 13 H37 M9 17 H37 M9 21 H37 M9 25 H37 M9 29 H37 M9 33 H37" stroke="rgba(201,168,76,0.4)" stroke-width="0.8"/>
+          <path d="M13 9 V37 M17 9 V37 M21 9 V37 M25 9 V37 M29 9 V37 M33 9 V37" stroke="rgba(201,168,76,0.25)" stroke-width="0.8"/>
+          <circle cx="23" cy="23" r="9" fill="none" stroke="rgba(201,168,76,0.7)" stroke-width="1.5"/>
+          <text x="23" y="27" text-anchor="middle" fill="#C9A84C" font-size="8" font-family="Cormorant Garamond, serif" font-weight="700" letter-spacing="0.5">BT</text>
+        </svg>
+        <span class="footer-brand-text">BURA TEXTILE</span>
+      </div>
+      <p class="footer-desc">A family-owned premium terry towel manufacturer based in Solapur, Maharashtra. Delivering export-quality products powered by rapier loom technology since 2010.</p>
+      <div style="display:flex;gap:1rem">
+        <a href="https://wa.me/919822074735" target="_blank" style="width:36px;height:36px;border:1px solid rgba(201,168,76,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:0.85rem;transition:var(--transition)" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='transparent'"><i class="fab fa-whatsapp"></i></a>
+        <a href="tel:+919822074735" style="width:36px;height:36px;border:1px solid rgba(201,168,76,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:0.75rem;transition:var(--transition)" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='transparent'"><i class="fas fa-phone"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul class="footer-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#products">Our Products</a></li>
+        <li><a href="#manufacturing">Manufacturing</a></li>
+        <li><a href="#why">Why Choose Us</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul class="footer-links">
+        <li><a href="#products">PRINCE (350 GSM)</a></li>
+        <li><a href="#products">SUPREME (300 GSM)</a></li>
+        <li><a href="#products">CHATTUR BHEEM (300 GSM)</a></li>
+        <li><a href="#products">SONY (250 GSM)</a></li>
+        <li><a href="#contact">Bulk Inquiry</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <ul class="footer-contact-list">
+        <li><i class="fas fa-map-marker-alt"></i><span>B-15 Padmashali Nagar, MIDC, Solapur, Maharashtra – 413006, India</span></li>
+        <li><i class="fas fa-phone"></i><a href="tel:+919822074735" style="color:var(--white-dim);transition:color 0.3s" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--white-dim)'">+91 98220 74735</a></li>
+        <li><i class="fas fa-phone"></i><a href="tel:+919850631817" style="color:var(--white-dim);transition:color 0.3s" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--white-dim)'">+91 98506 31817</a></li>
+        <li><i class="fas fa-phone"></i><a href="tel:+918888107125" style="color:var(--white-dim);transition:color 0.3s" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--white-dim)'">+91 88881 07125</a></li>
+      </ul>
     </div>
   </div>
-  <div class="footer-divider"></div>
-  <ul class="footer-links">
-    <li><a href="#hero">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#products">Products</a></li>
-    <li><a href="#why">Quality</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <p class="footer-copy">
-    &copy; 2024 Bura Textiles · Solapur, Maharashtra · Crafted with <span>♥</span> and Cotton
-  </p>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 BURA TEXTILE. All rights reserved. B-15 Padmashali Nagar, MIDC, Solapur.</p>
+    <p class="footer-gold-text">Est. 2010 · Premium Terry Towels · Export Ready</p>
+  </div>
 </footer>
 
-<!-- ============================================================
-     JAVASCRIPT
-     ============================================================ -->
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/919822074735?text=Hello%2C%20I%20am%20interested%20in%20bulk%20order%20inquiry%20for%20Terry%20Towels" 
+   target="_blank" class="whatsapp-float">
+  <i class="fab fa-whatsapp"></i>
+  <span class="wa-tooltip">Chat on WhatsApp</span>
+</a>
+
+<!-- JAVASCRIPT -->
 <script>
-/* ---- Loader ---- */
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
-  }, 1800);
+/* ===== PRELOADER ===== */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('preloader').classList.add('hide');
+  },1800);
 });
 
-/* ---- Navbar scroll ---- */
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-}, { passive: true });
+/* ===== ANIMATED THREAD CANVAS ===== */
+(function(){
+  const canvas=document.getElementById('thread-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,threads=[];
+  function resize(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize',resize);
+  const NUM_THREADS=18;
+  for(let i=0;i<NUM_THREADS;i++){
+    threads.push({
+      x:Math.random()*window.innerWidth,
+      y:Math.random()*window.innerHeight,
+      vx:(Math.random()-0.5)*0.4,
+      vy:(Math.random()-0.5)*0.4,
+      len:80+Math.random()*120,
+      alpha:0.2+Math.random()*0.4,
+      hue:38+Math.random()*15,
+      width:0.4+Math.random()*0.8,
+      curve:Math.random()*Math.PI*2,
+      curveSpeed:0.003+Math.random()*0.005,
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    threads.forEach(t=>{
+      t.x+=t.vx;t.y+=t.vy;t.curve+=t.curveSpeed;
+      if(t.x<-t.len)t.x=W+t.len;
+      if(t.x>W+t.len)t.x=-t.len;
+      if(t.y<-t.len)t.y=H+t.len;
+      if(t.y>H+t.len)t.y=-t.len;
+      const angle=t.curve;
+      const ex=t.x+Math.cos(angle)*t.len;
+      const ey=t.y+Math.sin(angle)*t.len;
+      const grad=ctx.createLinearGradient(t.x,t.y,ex,ey);
+      grad.addColorStop(0,'transparent');
+      grad.addColorStop(0.4,`hsla(${t.hue},60%,55%,${t.alpha})`);
+      grad.addColorStop(0.6,`hsla(${t.hue},60%,55%,${t.alpha})`);
+      grad.addColorStop(1,'transparent');
+      ctx.beginPath();
+      ctx.moveTo(t.x,t.y);
+      const cx1=t.x+Math.cos(angle+0.5)*t.len*0.6;
+      const cy1=t.y+Math.sin(angle+0.5)*t.len*0.6;
+      ctx.quadraticCurveTo(cx1,cy1,ex,ey);
+      ctx.strokeStyle=grad;
+      ctx.lineWidth=t.width;
+      ctx.stroke();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 
-/* ---- Hamburger / Mobile menu ---- */
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('open');
+/* ===== NAVBAR SCROLL ===== */
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navbar');
+  nav.classList.toggle('scrolled',window.scrollY>60);
+});
+
+/* ===== HAMBURGER MENU ===== */
+const hamburger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobileMenu');
+hamburger.addEventListener('click',()=>{
   mobileMenu.classList.toggle('open');
-  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  const spans=hamburger.querySelectorAll('span');
+  if(mobileMenu.classList.contains('open')){
+    spans[0].style.transform='rotate(45deg) translate(5px,5px)';
+    spans[1].style.opacity='0';
+    spans[2].style.transform='rotate(-45deg) translate(5px,-5px)';
+  } else {
+    spans.forEach(s=>{s.style.transform='';s.style.opacity='';});
+  }
 });
-function closeMobile() {
-  hamburger.classList.remove('open');
-  mobileMenu.classList.remove('open');
-  document.body.style.overflow = '';
-}
+document.querySelectorAll('.mm-link').forEach(link=>{
+  link.addEventListener('click',()=>{
+    mobileMenu.classList.remove('open');
+    const spans=hamburger.querySelectorAll('span');
+    spans.forEach(s=>{s.style.transform='';s.style.opacity='';});
+  });
+});
 
-/* ---- Scroll reveal ---- */
-const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const delay = parseFloat(el.style.transitionDelay || '0') * 1000;
-      setTimeout(() => el.classList.add('visible'), delay);
-      revealObserver.unobserve(el);
+/* ===== SCROLL REVEAL ===== */
+const revealObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
     }
   });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-revealEls.forEach(el => revealObserver.observe(el));
+},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revealObserver.observe(el));
 
-/* ---- Subtle parallax on hero ---- */
-const heroWatermark = document.querySelector('.hero-watermark svg');
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  if (heroWatermark && y < window.innerHeight) {
-    heroWatermark.style.transform = `translateY(${y * 0.08}px) scale(${1 + y * 0.00004})`;
-  }
-}, { passive: true });
+/* ===== COUNTER ANIMATION ===== */
+const counterObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const el=entry.target;
+      const target=parseInt(el.dataset.count);
+      let current=0;
+      const duration=1500;
+      const step=target/60;
+      const interval=setInterval(()=>{
+        current+=step;
+        if(current>=target){current=target;clearInterval(interval);}
+        el.textContent=Math.floor(current)+(el.dataset.count==="100"?"%":"+"||"");
+      },duration/60);
+      counterObserver.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+document.querySelectorAll('[data-count]').forEach(el=>counterObserver.observe(el));
+
+/* ===== SMOOTH SCROLL ===== */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){
+      e.preventDefault();
+      target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+
+/* ===== PRODUCT INQUIRY ===== */
+document.querySelectorAll('.product-inquiry').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    e.preventDefault();
+    const productName=this.closest('.product-card').querySelector('.product-name').textContent.trim().replace(/\n/g,' ');
+    const waUrl=`https://wa.me/919822074735?text=Hello%2C%20I%20am%20interested%20in%20a%20bulk%20order%20inquiry%20for%20${encodeURIComponent(productName)}%20towels.%20Please%20share%20pricing%20and%20availability.`;
+    window.open(waUrl,'_blank');
+  });
+});
 </script>
 </body>
 </html>
